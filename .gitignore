@@ -1,7 +1,4 @@
 .DS_Store
 
-node_modules/
-.vite/
-
 agent-reference/backend/data/*
 agent-reference/backend/tmp/
