@@ -10,12 +10,32 @@ Prerequisites:
 
 - Go 1.22+
 - CGO enabled (required by SQLite driver)
+- [Air](https://github.com/air-verse/air) (optional, for live reload)
+
+### Run the server
 
 ```sh
 go run ./cmd/app
 ```
 
 The server starts on `:8770` by default. The API is mounted under `/api` and the OpenAPI contract lives at `docs/openapi/openapi.yaml`.
+
+### Live reload with Air
+
+Air watches for file changes and automatically rebuilds and restarts the server — no manual stop/start cycle needed.
+
+```sh
+# Install Air (one-time)
+go install github.com/air-verse/air@latest
+
+# Make sure ~/go/bin is on your PATH
+export PATH=$PATH:$HOME/go/bin
+
+# Start the server with live reload
+air
+```
+
+Air is configured via `.air.toml` in this directory. It watches `.go` files, excludes tests and the `data/`/`docs/` directories, and outputs the binary to `tmp/` (which is gitignored).
 
 ## Configuration
 

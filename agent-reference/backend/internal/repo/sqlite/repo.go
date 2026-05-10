@@ -98,7 +98,7 @@ func (r *Repository) ListTeams(ctx context.Context) ([]entity.Team, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var teams []entity.Team
+	teams := make([]entity.Team, 0)
 	for rows.Next() {
 		var team entity.Team
 		if err := rows.Scan(&team.ID, &team.CreatedAt, &team.Name, &team.Description); err != nil {
@@ -130,7 +130,7 @@ func (r *Repository) ListUsers(ctx context.Context, teamID string) ([]entity.Use
 		return nil, err
 	}
 	defer rows.Close()
-	var users []entity.User
+	users := make([]entity.User, 0)
 	for rows.Next() {
 		user, err := scanUserRows(rows)
 		if err != nil {
@@ -174,7 +174,7 @@ func (r *Repository) ListDiscussions(ctx context.Context, teamID string, page in
 		return entity.Page[entity.Discussion]{}, err
 	}
 	defer rows.Close()
-	var discussions []entity.Discussion
+	discussions := make([]entity.Discussion, 0)
 	for rows.Next() {
 		discussion, err := scanDiscussionRows(rows)
 		if err != nil {
@@ -228,7 +228,7 @@ func (r *Repository) ListComments(ctx context.Context, discussionID string, page
 		return entity.Page[entity.Comment]{}, err
 	}
 	defer rows.Close()
-	var comments []entity.Comment
+	comments := make([]entity.Comment, 0)
 	for rows.Next() {
 		comment, err := scanCommentRows(rows)
 		if err != nil {

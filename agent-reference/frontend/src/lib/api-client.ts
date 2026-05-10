@@ -23,19 +23,22 @@ api.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (error.response?.status === 401) {
+      const isAuthPage = window.location.pathname.startsWith('/auth');
+      if (!isAuthPage) {
+        window.location.href = paths.auth.login.getHref(
+          window.location.pathname,
+        );
+      }
+      return Promise.reject(error);
+    }
+
     const message = error.response?.data?.message || error.message;
     useNotifications.getState().addNotification({
       type: 'error',
       title: 'Error',
       message,
     });
-
-    if (error.response?.status === 401) {
-      const searchParams = new URLSearchParams();
-      const redirectTo =
-        searchParams.get('redirectTo') || window.location.pathname;
-      window.location.href = paths.auth.login.getHref(redirectTo);
-    }
 
     return Promise.reject(error);
   },
