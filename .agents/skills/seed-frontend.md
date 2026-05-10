@@ -29,6 +29,7 @@ and approach — do not copy feature-specific content verbatim.
 | `components.json` | Shadcn component config |
 | `.prettierrc` | Formatting config |
 | `eslint.config.js` | Lint config |
+| `.gitignore` | Standard ignores: macOS, node_modules, build output, env files, logs, editors |
 
 ### Tier 3 — App shell (needed to render anything)
 
