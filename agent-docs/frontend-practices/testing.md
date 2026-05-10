@@ -43,6 +43,29 @@ API adapter tests verify HTTP wire-shape mapping, response normalization,
 session behavior, and backend error handling. They should prove that API-backed
 adapters satisfy the same port contracts as local adapters.
 
+### Test Adapters
+
+Test adapters are deterministic fakes, stubs, spies, or failure adapters that
+satisfy the same frontend ports as local and API adapters. They belong to the
+test harness, for example under `src/testing/adapters/`, not under production
+`src/adapters/`.
+
+Use test adapters when a unit, hook, provider, or component test needs precise
+control over success, failure, latency, permission, empty-state, or edge-case
+behavior. Do not register test adapters through the production composition
+root, and do not treat them as product behavior. If a fake becomes useful for
+local demos or scenario mode, promote the behavior into local adapters or
+shared fixtures intentionally.
+
+```txt
+src/
+  ports/              # stable interfaces
+  adapters/local/     # browser-only product behavior
+  adapters/http/      # API-backed behavior
+  testing/adapters/   # test doubles that implement ports
+  testing/fixtures/   # reusable scenario data
+```
+
 ### Integration Tests
 
 Integration testing checks how screens, feature hooks, providers, and adapters

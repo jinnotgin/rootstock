@@ -25,7 +25,12 @@ The API is mounted under `/api` and the OpenAPI contract lives at `docs/openapi/
 ```txt
 Go port        = interface defined by the use case
 Go adapter     = concrete repo/controller implementation
+Go test adapter = _test.go fake/stub implementing a use-case-owned interface
 Go constructor = New... function that injects dependencies
 ```
 
 Constructors wire ports and adapters together. They are not themselves ports or adapters.
+
+Test adapters belong to the test harness, not the production composition root.
+Use them for deterministic use-case tests. Keep real repository, controller,
+and external-service adapters in production packages.

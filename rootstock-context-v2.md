@@ -447,6 +447,8 @@ Four layers of testing serve different concerns:
 
 **Contract tests** verify that real adapters conform to port interfaces and that API responses match expected schemas. These are the primary guard against mock drift. When request interceptors and fixture data are the source of truth during experience work, contract tests are what catch the moment a real API diverges from those assumptions. Consumer-driven contract tools like Pact are effective here because the experience team's tests produce a contract that the foundation team's API can verify against independently.
 
+**Test adapters** are deterministic fakes, stubs, spies, clocks, ID generators, or failure adapters that exist only in the test harness. They implement the same ports or use-case-owned interfaces as production adapters, but they are not runtime modes and should not be registered by production composition roots. In the frontend, keep them under `src/testing/adapters/` and inject them through test render helpers or provider overrides. In Go backend code, keep them in `_test.go` files or test-helper packages that implement interfaces owned by the use case. If a fake becomes useful for local demos, promote that behavior intentionally into local adapters or scenario fixtures.
+
 **End-to-end tests** run the full app against a real or staging backend. They verify critical user paths across the full stack. Run them across environment modes using CI matrix jobs so the same test suite executes against different adapter registrations and base URLs.
 
 The most common failure in this model is not a lack of tests but a lack of contract tests. Unit and integration coverage can be green while the real API has quietly changed shape. Contract tests close that gap.

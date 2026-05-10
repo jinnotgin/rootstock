@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import { RouterProvider, createMemoryRouter } from 'react-router';
 
 import { AppProvider } from '@/app/provider';
+import { AppServices } from '@/services/app-services-provider';
 
 import {
   createDiscussion as generateDiscussion,
@@ -56,7 +57,13 @@ const initializeUser = async (user: any) => {
 
 export const renderApp = async (
   ui: any,
-  { user, url = '/', path = '/', ...renderOptions }: Record<string, any> = {},
+  {
+    user,
+    url = '/',
+    path = '/',
+    services,
+    ...renderOptions
+  }: Record<string, any> & { services?: AppServices } = {},
 ) => {
   // if you want to render the app unauthenticated then pass "null" as the user
   const initializedUser = await initializeUser(user);
@@ -78,7 +85,7 @@ export const renderApp = async (
     ...rtlRender(ui, {
       wrapper: () => {
         return (
-          <AppProvider>
+          <AppProvider services={services}>
             <RouterProvider router={router} />
           </AppProvider>
         );

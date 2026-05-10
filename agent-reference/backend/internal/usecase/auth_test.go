@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"time"
 
 	"rootstock/backend/internal/entity"
 )
@@ -53,66 +52,4 @@ func TestAuthUseCaseLoginRejectsInvalidPassword(t *testing.T) {
 	if !errors.Is(err, ErrUnauthorized) {
 		t.Fatalf("expected ErrUnauthorized, got %v", err)
 	}
-}
-
-type fixedIDs []string
-
-func (f *fixedIDs) NewID() string {
-	id := (*f)[0]
-	*f = (*f)[1:]
-	return id
-}
-
-type fixedClock struct{}
-
-func (fixedClock) Now() time.Time {
-	return time.UnixMilli(1715299200000)
-}
-
-type memoryRepo struct {
-	users map[string]entity.User
-	teams map[string]entity.Team
-}
-
-func newMemoryRepo() *memoryRepo {
-	return &memoryRepo{users: map[string]entity.User{}, teams: map[string]entity.Team{}}
-}
-
-func (r *memoryRepo) CreateTeam(_ context.Context, team entity.Team) (entity.Team, error) {
-	r.teams[team.ID] = team
-	return team, nil
-}
-
-func (r *memoryRepo) GetTeam(_ context.Context, id string) (entity.Team, error) {
-	team, ok := r.teams[id]
-	if !ok {
-		return entity.Team{}, ErrNotFound
-	}
-	return team, nil
-}
-
-func (r *memoryRepo) CreateUser(_ context.Context, user entity.User) (entity.User, error) {
-	r.users[user.ID] = user
-	return user, nil
-}
-
-func (r *memoryRepo) GetUserByEmail(_ context.Context, email string) (entity.User, error) {
-	for _, user := range r.users {
-		if user.Email == email {
-			return user, nil
-		}
-	}
-	return entity.User{}, ErrNotFound
-}
-
-func (r *memoryRepo) GetUser(_ context.Context, id string) (entity.User, error) {
-	user, ok := r.users[id]
-	if !ok {
-		return entity.User{}, ErrNotFound
-	}
-	return user, nil
-}
-
-func ptr(value string) *string {
-	return &value
 }

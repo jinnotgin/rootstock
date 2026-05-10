@@ -9,15 +9,19 @@ import { Notifications } from '@/components/ui/notifications';
 import { Spinner } from '@/components/ui/spinner';
 import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from '@/lib/react-query';
-import { AppServicesProvider } from '@/services/app-services-provider';
+import {
+  AppServices,
+  AppServicesProvider,
+} from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
 
 type AppProviderProps = {
   children: React.ReactNode;
+  services?: AppServices;
 };
 
-export const AppProvider = ({ children }: AppProviderProps) => {
-  const [services] = React.useState(() => defaultServices);
+export const AppProvider = ({ children, services }: AppProviderProps) => {
+  const [appServices] = React.useState(() => services ?? defaultServices);
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -35,7 +39,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     >
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <HelmetProvider>
-          <AppServicesProvider value={services}>
+          <AppServicesProvider value={appServices}>
             <QueryClientProvider client={queryClient}>
               {import.meta.env.DEV && <ReactQueryDevtools />}
               <Notifications />

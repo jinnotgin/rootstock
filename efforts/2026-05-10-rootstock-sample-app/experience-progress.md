@@ -163,3 +163,24 @@ Documentation maintenance:
   local-mode fixture, not the production trust boundary
 - included frontend TDD guidance for behavior, port contract, and adapter
   changes
+
+Clarified test adapter guidance and updated the reference implementations:
+
+- documented test adapters as test-harness implementations of the same ports,
+  separate from production local/API/repository adapters
+- added frontend `src/testing/adapters/make-test-services.ts` for deterministic
+  port-level test services
+- allowed `renderApp` and `AppProvider` to inject test services without
+  changing the production default service composition
+- moved Go use-case test fakes, clocks, and ID generators into
+  `internal/usecase/test_adapters_test.go`
+- documented the same pattern in frontend, backend, and Rootstock architecture
+  testing guidance
+
+Verification:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 16 files, 27 tests
+- `npm run build` passed
+- `go test ./...` passed
