@@ -1,21 +1,12 @@
-# Rootstock: Experience-first, foundation-backed
+# Rootstock: Integrating Experience and Foundation Work in AI-Development Life Cycle (AI-DLC)
 
-Rootstock borrows its name from how some fruit trees are grown. A grower keeps a
-strong, healthy root base in place, chosen for disease resistance, soil tolerance,
-and vigor, while the fruiting part grafted above it can change: lemons today,
-limes tomorrow. The root base doesn't care what fruit grows. It provides stability
-and nourishment through a clean graft point.
+AI tools let a single person produce working screens, flows, and interaction behavior in hours. But auth, persistence, data integrity, and third-party integrations carry different risks. They need different ownership and a different rigour. Without separation, either the front end slows to match backend rigor or the backend cuts corners to match front-end speed. 
 
-In software, the core application is that stable root base. It defines clear ports
-for what it needs. Databases, APIs, authentication providers, and third-party
-services connect through adapters that can be replaced, upgraded, or removed as the
-system evolves. The important logic stays deeply rooted and protected. Everything
-around it remains flexible enough to change.
+Rootstock is a working model for letting the two move independently, connected through a stable interface that neither side has to break when the other changes.
 
-This document describes how that principle applies to a specific working model: one
-where experience work (the fruit the user picks) iterates rapidly using LLM tools,
-while foundation work (the root system that keeps it trustworthy) is owned separately
-and connected progressively.
+The name comes from how fruit trees are grown. A grower keeps a strong root base chosen for disease resistance and vigor. The fruiting part grafted above it can change: lemons today, limes tomorrow. The root base doesn't care. It provides stability through a clean graft point. In software, the core application is that root base. It defines clear ports for what it needs. Databases, APIs, auth providers, and third-party services connect through adapters that can be swapped as the system evolves.
+
+This document describes how that principle applies: experience work (the visible product) iterates rapidly with LLM tools, while foundation work (the trust layer beneath it) is owned separately and connected progressively.
 
 ---
 
@@ -482,7 +473,7 @@ Do not document every component prop, every file, every small styling change, or
 
 Tests in Rootstock serve a specific purpose beyond general quality: they are what prevent the experience and foundation layers from silently diverging as each side evolves.
 
-Four layers of testing serve different concerns:
+Five layers of testing serve different concerns:
 
 **Unit tests** target application services and business logic against fake adapters. They run fast, with no network and no browser, and verify that domain logic behaves correctly regardless of the adapter behind it.
 
