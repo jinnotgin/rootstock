@@ -1,12 +1,21 @@
 # Rootstock: Experience-first, foundation-backed
 
-## A note on roles
+Rootstock borrows its name from how some fruit trees are grown. A grower keeps a
+strong, healthy root base in place, chosen for disease resistance, soil tolerance,
+and vigor, while the fruiting part grafted above it can change: lemons today,
+limes tomorrow. The root base doesn't care what fruit grows. It provides stability
+and nourishment through a clean graft point.
 
-This document does not name specific roles (designer, engineer, product manager, etc.). In an AI-assisted development life cycle (AI-DLC), the boundaries between who does what are shifting. LLM tools allow people with different backgrounds to contribute across traditional role lines.
+In software, the core application is that stable root base. It defines clear ports
+for what it needs. Databases, APIs, authentication providers, and third-party
+services connect through adapters that can be replaced, upgraded, or removed as the
+system evolves. The important logic stays deeply rooted and protected. Everything
+around it remains flexible enough to change.
 
-What matters is the *type of work* being done, not the job title of who does it. The two types of work are described below as experience work and foundation work. A single person may do both. A team may split them. The separation is about concern, not headcount.
-
-In all cases, the work happens in the codebase: directly or through LLM tools that produce code.
+This document describes how that principle applies to a specific working model: one
+where experience work (the fruit the user picks) iterates rapidly using LLM tools,
+while foundation work (the root system that keeps it trustworthy) is owned separately
+and connected progressively.
 
 ---
 
@@ -15,6 +24,16 @@ In all cases, the work happens in the codebase: directly or through LLM tools th
 Rootstock is a working model for teams where experience work (screens, flows, states, copy, interaction behavior) is built and iterated using LLM tools, while foundation work (auth, persistence, authorization, integrations, security, data integrity) is owned separately and connected progressively.
 
 The front end starts in a fully local mode and later connects to real services without rewriting the product experience.
+
+---
+
+## A note on roles
+
+This document does not name specific roles (designer, engineer, product manager, etc.). In an AI-assisted development life cycle (AI-DLC), the boundaries between who does what are shifting. LLM tools allow people with different backgrounds to contribute across traditional role lines.
+
+What matters is the *type of work* being done, not the job title of who does it. The two types of work are described below as experience work and foundation work. A single person may do both. A team may split them. The separation is about concern, not headcount.
+
+In all cases, the work happens in the codebase: directly or through LLM tools that produce code.
 
 ---
 
@@ -35,6 +54,12 @@ The **experience layer** is what the user sees and touches: screens, flows, comp
 The **foundation layer** is what makes the product trustworthy: authentication, authorization, persistence, data integrity, audit trails, security rules, backups, APIs, monitoring, operational reliability.
 
 Both layers shape the same product from different risk perspectives.
+
+The architectural mechanism that keeps them from coupling is the
+ports-and-adapters pattern. Components depend on stable interfaces (ports).
+Implementations behind those interfaces (adapters) change based on the current
+mode. This is the graft point: the place where the experience layer and the
+foundation layer meet without either one knowing the internal details of the other.
 
 ---
 
@@ -77,11 +102,13 @@ Frontend build tools (Vite, Next.js, and similar) expose prefixed environment va
 
 ---
 
-## Core architectural principle
+## Core architectural principle: the graft point
 
-The same Rootstock front-end code should run against any mode. UI components should not know whether they talk to IndexedDB, Supabase, SingPass, or fixture data.
+The same Rootstock front-end code should run against any mode. UI components
+should not know whether they talk to IndexedDB, PostgreSQL, SingPass, or fixture data.
 
-The app depends on stable interfaces:
+The app depends on stable interfaces (ports). These are the graft point between
+the experience layer and whatever foundation implementation sits behind it:
 
 ```ts
 interface AuthProvider {
@@ -302,6 +329,22 @@ How do we observe failures?
 
 ---
 
+## Where the layers overlap
+
+Some concerns span both layers. Validation is one: the user sees inline errors
+(experience), but the server enforces the real rules (foundation). Optimistic
+updates are another: the UI shows a change immediately, but the server might
+reject it, and the reconciliation logic sits in between. Authorization-driven UI
+is a third: which buttons appear depends on permissions (foundation), but the
+rendering is experience work.
+
+The port interface is where the two sides negotiate these overlaps. The port
+defines what the experience layer can ask for. The adapter decides how the
+foundation layer answers. When a concern feels like it belongs to both layers,
+the port contract is where the boundary gets drawn.
+
+---
+
 ## Handoff model
 
 The handoff is: "here is a working front end with domain types, service interfaces, mock implementations, and scenario fixtures. Replace the mock adapters with real adapters and harden the trust model."
@@ -326,7 +369,7 @@ The codebase explains what exists. Effort docs explain why it changed, what was 
 
 This structure follows the same reasoning behind Architecture Decision Records (ADRs): code shows what was built, but not what was considered, rejected, or left open. The effort folder is an extension of ADR practice, scoped to a specific body of work and split across experience and foundation concerns.
 
-As much as possible, these documents should be auto-generated behind-the-scenes by AI agents, as part of using AI agents to perform tasks. This is known as "ambient documentation." Good automation targets include updating progress files from PR metadata, flagging open questions when adapter registrations change, and generating component documentation from stories and type definitions. The goal is documentation that stays current because it is a byproduct of work, not a separate obligation.
+Where possible, these documents should be generated by AI agents as a byproduct of performing tasks. This is known as "ambient documentation." Good automation targets include updating progress files from PR metadata, flagging open questions when adapter registrations change, and generating component documentation from stories and type definitions. The goal is documentation that stays current because it is a byproduct of work, not a separate obligation.
 
 ### Terminology
 
@@ -451,7 +494,10 @@ Four layers of testing serve different concerns:
 
 **End-to-end tests** run the full app against a real or staging backend. They verify critical user paths across the full stack. Run them across environment modes using CI matrix jobs so the same test suite executes against different adapter registrations and base URLs.
 
-The most common failure in this model is not a lack of tests but a lack of contract tests. Unit and integration coverage can be green while the real API has quietly changed shape. Contract tests close that gap.
+The most common failure in this model is not a lack of tests but a lack of
+contract tests. Unit and integration coverage can be green while the real API has
+quietly changed shape. Contract tests close that gap. They verify the graft is
+healthy: that the adapters actually conform to the ports they claim to implement.
 
 ---
 
@@ -473,8 +519,16 @@ The most common failure in this model is not a lack of tests but a lack of contr
 
 ## Summary
 
-Experience work can move fast with LLM tools: visible behavior, local state, demo data, screen flows, component composition, copy, interaction design.
+Experience work can move fast with LLM tools: visible behavior, local state,
+demo data, screen flows, component composition, copy, interaction design.
 
-Foundation involvement is needed for: real identity, real personal data, shared records, permissions, databases, third-party integrations, security, compliance.
+Foundation involvement is needed for: real identity, real personal data, shared
+records, permissions, databases, third-party integrations, security, compliance.
 
-Rootstock's bridge between experience and foundation is a stable front-end contract: design system components (grounded through a registry or workshop), domain types, service interfaces, mocks, replaceable adapters, and a composition root that maps the current mode to the correct implementations. Request interceptors and scenario fixtures make local mode productive. Contract tests prevent the two layers from diverging. The effort layer preserves the context that code alone cannot carry.
+Rootstock's bridge between experience and foundation is a stable front-end
+contract: design system components (grounded through a registry or workshop),
+domain types, service interfaces, mocks, replaceable adapters, and a composition
+root that maps the current mode to the correct implementations. Request
+interceptors and scenario fixtures make local mode productive. Contract tests
+prevent the two layers from diverging. The effort layer preserves the context
+that code alone cannot carry.
