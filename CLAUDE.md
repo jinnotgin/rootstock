@@ -1,1 +1,1 @@
-Refer to ./AGENTS.md.
+Refer to ./AGENTS.md in full.
