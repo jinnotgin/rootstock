@@ -20,9 +20,10 @@ const page = <T>(data: T[], currentPage = 1) => {
 const now = () => Date.now();
 
 const currentUser = async (db: LocalDatabase) => {
-  const [session] = await db.collection<{ userId: string }>('session');
-  const users = await db.collection<User>('users');
-  const user = users.find((item) => item.id === session?.userId);
+  const sessions = await db.getAll<{ userId: string }>('session');
+  const session = sessions[0];
+  if (!session) throw new Error('Unauthorized');
+  const user = await db.get<User>('users', session.userId);
   if (!user) throw new Error('Unauthorized');
   return user;
 };
@@ -37,28 +38,25 @@ class LocalAuthProvider {
   constructor(private readonly db: LocalDatabase) {}
 
   async getCurrentUser() {
-    const [session] = await this.db.collection<{ userId: string }>('session');
+    const sessions = await this.db.getAll<{ userId: string }>('session');
+    const session = sessions[0];
     if (!session) return null;
-    const users = await this.db.collection<User & { password?: string }>(
-      'users',
-    );
-    return users.find((user) => user.id === session.userId) ?? null;
+    return (await this.db.get<User>('users', session.userId)) ?? null;
   }
 
   async login(input: {
     email: string;
     password: string;
   }): Promise<AuthResponse> {
-    const users = await this.db.collection<User & { password?: string }>(
-      'users',
-    );
+    const users = await this.db.getAll<User & { password?: string }>('users');
     const user = users.find(
       (candidate) =>
         candidate.email === input.email &&
         candidate.password === input.password,
     );
     if (!user) throw new Error('Invalid username or password');
-    await this.db.replaceCollection('session', [{ userId: user.id }]);
+    await this.db.clear('session');
+    await this.db.put('session', { userId: user.id });
     return { jwt: btoa(JSON.stringify({ id: user.id })), user };
   }
 
@@ -70,26 +68,22 @@ class LocalAuthProvider {
     teamId?: string | null;
     teamName?: string | null;
   }): Promise<AuthResponse> {
-    const users = await this.db.collection<User & { password?: string }>(
-      'users',
-    );
+    const users = await this.db.getAll<User & { password?: string }>('users');
     if (users.some((user) => user.email === input.email)) {
       throw new Error('The user already exists');
     }
 
-    const teams = await this.db.collection<Team>('teams');
     let teamId = input.teamId ?? '';
     let role: User['role'] = 'USER';
     if (!teamId) {
       role = 'ADMIN';
       teamId = createId();
-      teams.push({
+      await this.db.put('teams', {
         id: teamId,
         createdAt: now(),
         name: input.teamName || `${input.firstName} Team`,
         description: '',
       });
-      await this.db.replaceCollection('teams', teams);
     }
 
     const user: User & { password?: string } = {
@@ -103,14 +97,14 @@ class LocalAuthProvider {
       bio: '',
       password: input.password,
     };
-    users.push(user);
-    await this.db.replaceCollection('users', users);
-    await this.db.replaceCollection('session', [{ userId: user.id }]);
+    await this.db.put('users', user);
+    await this.db.clear('session');
+    await this.db.put('session', { userId: user.id });
     return { jwt: btoa(JSON.stringify({ id: user.id })), user };
   }
 
   async logout() {
-    await this.db.replaceCollection('session', []);
+    await this.db.clear('session');
   }
 }
 
@@ -118,7 +112,7 @@ class LocalTeamStore {
   constructor(private readonly db: LocalDatabase) {}
 
   async listTeams() {
-    return { data: await this.db.collection<Team>('teams') };
+    return { data: await this.db.getAll<Team>('teams') };
   }
 }
 
@@ -126,8 +120,7 @@ class LocalUserStore {
   constructor(private readonly db: LocalDatabase) {}
 
   async listUsers() {
-    const users = await this.db.collection<User>('users');
-    return { data: users };
+    return { data: await this.db.getAll<User>('users') };
   }
 
   async updateProfile(input: {
@@ -136,25 +129,18 @@ class LocalUserStore {
     lastName: string;
     bio: string;
   }) {
-    const users = await this.db.collection<User>('users');
-    const [session] = await this.db.collection<{ userId: string }>('session');
-    const index = users.findIndex((user) => user.id === session?.userId);
-    if (index < 0) throw new Error('Unauthorized');
-    users[index] = { ...users[index], ...input };
-    await this.db.replaceCollection('users', users);
-    return users[index];
+    const user = await currentUser(this.db);
+    const updated = { ...user, ...input };
+    await this.db.put('users', updated);
+    return updated;
   }
 
   async deleteUser(userId: string) {
     await requireAdmin(this.db);
-    const users = await this.db.collection<User>('users');
-    const deleted = users.find((user) => user.id === userId);
-    if (!deleted) throw new Error('Not found');
-    await this.db.replaceCollection(
-      'users',
-      users.filter((user) => user.id !== userId),
-    );
-    return deleted;
+    const user = await this.db.get<User>('users', userId);
+    if (!user) throw new Error('Not found');
+    await this.db.delete('users', userId);
+    return user;
   }
 }
 
@@ -167,18 +153,19 @@ class LocalDiscussionStore {
   }
 
   async getDiscussion(discussionId: string) {
-    const discussion = (await this.withAuthors()).find(
-      (item) => item.id === discussionId,
+    const discussion = await this.db.get<Discussion & { authorId?: string }>(
+      'discussions',
+      discussionId,
     );
     if (!discussion) throw new Error('Discussion not found');
-    return { data: discussion };
+    const author = discussion.authorId
+      ? await this.db.get<User>('users', discussion.authorId)
+      : undefined;
+    return { data: { ...discussion, author: author ?? discussion.author } };
   }
 
   async createDiscussion(input: { title: string; body: string }) {
     const user = await requireAdmin(this.db);
-    const discussions = await this.db.collection<
-      Discussion & { authorId?: string }
-    >('discussions');
     const discussion = {
       id: createId(),
       createdAt: now(),
@@ -188,8 +175,7 @@ class LocalDiscussionStore {
       authorId: user.id,
       author: user,
     };
-    discussions.push(discussion);
-    await this.db.replaceCollection('discussions', discussions);
+    await this.db.put('discussions', discussion);
     return discussion;
   }
 
@@ -198,30 +184,29 @@ class LocalDiscussionStore {
     input: { title: string; body: string },
   ) {
     await requireAdmin(this.db);
-    const discussions = await this.db.collection<
-      Discussion & { authorId?: string }
-    >('discussions');
-    const index = discussions.findIndex((item) => item.id === discussionId);
-    if (index < 0) throw new Error('Discussion not found');
-    discussions[index] = { ...discussions[index], ...input };
-    await this.db.replaceCollection('discussions', discussions);
-    return (await this.getDiscussion(discussionId)).data;
+    const discussion = await this.db.get<Discussion & { authorId?: string }>(
+      'discussions',
+      discussionId,
+    );
+    if (!discussion) throw new Error('Discussion not found');
+    const updated = { ...discussion, ...input };
+    await this.db.put('discussions', updated);
+    const author = updated.authorId
+      ? await this.db.get<User>('users', updated.authorId)
+      : undefined;
+    return { ...updated, author: author ?? updated.author };
   }
 
   async deleteDiscussion(discussionId: string) {
     await requireAdmin(this.db);
-    const discussion = (await this.getDiscussion(discussionId)).data;
-    const discussions = await this.db.collection<Discussion>('discussions');
-    await this.db.replaceCollection(
-      'discussions',
-      discussions.filter((item) => item.id !== discussionId),
-    );
-    return discussion;
+    const result = await this.getDiscussion(discussionId);
+    await this.db.delete('discussions', discussionId);
+    return result.data;
   }
 
   private async withAuthors() {
-    const users = await this.db.collection<User>('users');
-    const discussions = await this.db.collection<
+    const users = await this.db.getAll<User>('users');
+    const discussions = await this.db.getAll<
       Discussion & { authorId?: string }
     >('discussions');
     return discussions.map((discussion) => ({
@@ -243,17 +228,20 @@ class LocalCommentStore {
     discussionId: string;
     page?: number;
   }) {
-    const comments = (await this.withAuthors()).filter(
-      (comment) => comment.discussionId === discussionId,
-    );
+    const rawComments = await this.db.getAllByIndex<
+      Comment & { authorId?: string }
+    >('comments', 'by-discussionId', discussionId);
+    const users = await this.db.getAll<User>('users');
+    const comments = rawComments.map((comment) => ({
+      ...comment,
+      author:
+        users.find((user) => user.id === comment.authorId) ?? comment.author,
+    }));
     return page(comments, currentPage);
   }
 
   async createComment(input: { discussionId: string; body: string }) {
     const user = await currentUser(this.db);
-    const comments = await this.db.collection<Comment & { authorId?: string }>(
-      'comments',
-    );
     const comment = {
       id: createId(),
       createdAt: now(),
@@ -262,38 +250,23 @@ class LocalCommentStore {
       authorId: user.id,
       author: user,
     };
-    comments.push(comment);
-    await this.db.replaceCollection('comments', comments);
+    await this.db.put('comments', comment);
     return comment;
   }
 
   async deleteComment(commentId: string) {
     const user = await currentUser(this.db);
-    const comments = await this.db.collection<Comment>('comments');
-    const comment = comments.find((item) => item.id === commentId);
+    const comment = await this.db.get<Comment & { authorId?: string }>(
+      'comments',
+      commentId,
+    );
     if (!comment) throw new Error('Not found');
-    const authorId =
-      'authorId' in comment ? comment.authorId : comment.author.id;
+    const authorId = comment.authorId ?? comment.author?.id;
     if (user.role !== 'ADMIN' && authorId !== user.id) {
       throw new Error('Not found');
     }
-    await this.db.replaceCollection(
-      'comments',
-      comments.filter((item) => item.id !== commentId),
-    );
+    await this.db.delete('comments', commentId);
     return comment;
-  }
-
-  private async withAuthors() {
-    const users = await this.db.collection<User>('users');
-    const comments = await this.db.collection<Comment & { authorId?: string }>(
-      'comments',
-    );
-    return comments.map((comment) => ({
-      ...comment,
-      author:
-        users.find((user) => user.id === comment.authorId) ?? comment.author,
-    }));
   }
 }
 

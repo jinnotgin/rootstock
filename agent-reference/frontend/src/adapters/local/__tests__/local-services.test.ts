@@ -2,7 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeLocalServices } from '../local-services';
 
-const fallbackKey = 'rootstock-local-db';
+const keyPrefix = 'rootstock-local-db';
+
+const seedStore = (store: string, data: unknown[]) =>
+  window.localStorage.setItem(`${keyPrefix}:${store}`, JSON.stringify(data));
 
 describe('makeLocalServices', () => {
   beforeEach(() => {
@@ -11,53 +14,48 @@ describe('makeLocalServices', () => {
   });
 
   it('prevents non-admin users from writing admin-only resources', async () => {
-    window.localStorage.setItem(
-      fallbackKey,
-      JSON.stringify({
-        session: [{ userId: 'user-1' }],
-        teams: [
-          {
-            id: 'team-1',
-            createdAt: 1715299200000,
-            name: 'Ada Team',
-            description: '',
-          },
-        ],
-        users: [
-          {
-            id: 'user-1',
-            createdAt: 1715299200000,
-            firstName: 'Ada',
-            lastName: 'Lovelace',
-            email: 'ada@example.com',
-            role: 'USER',
-            teamId: 'team-1',
-            bio: '',
-          },
-          {
-            id: 'user-2',
-            createdAt: 1715299200001,
-            firstName: 'Grace',
-            lastName: 'Hopper',
-            email: 'grace@example.com',
-            role: 'USER',
-            teamId: 'team-1',
-            bio: '',
-          },
-        ],
-        discussions: [
-          {
-            id: 'discussion-1',
-            createdAt: 1715299200002,
-            title: 'Existing discussion',
-            body: 'Existing body.',
-            teamId: 'team-1',
-            authorId: 'user-2',
-          },
-        ],
-        comments: [],
-      }),
-    );
+    seedStore('session', [{ userId: 'user-1' }]);
+    seedStore('teams', [
+      {
+        id: 'team-1',
+        createdAt: 1715299200000,
+        name: 'Ada Team',
+        description: '',
+      },
+    ]);
+    seedStore('users', [
+      {
+        id: 'user-1',
+        createdAt: 1715299200000,
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        email: 'ada@example.com',
+        role: 'USER',
+        teamId: 'team-1',
+        bio: '',
+      },
+      {
+        id: 'user-2',
+        createdAt: 1715299200001,
+        firstName: 'Grace',
+        lastName: 'Hopper',
+        email: 'grace@example.com',
+        role: 'USER',
+        teamId: 'team-1',
+        bio: '',
+      },
+    ]);
+    seedStore('discussions', [
+      {
+        id: 'discussion-1',
+        createdAt: 1715299200002,
+        title: 'Existing discussion',
+        body: 'Existing body.',
+        teamId: 'team-1',
+        authorId: 'user-2',
+      },
+    ]);
+    seedStore('comments', []);
     const services = makeLocalServices();
 
     await expect(
@@ -81,45 +79,40 @@ describe('makeLocalServices', () => {
   });
 
   it('prevents users from deleting comments they do not own', async () => {
-    window.localStorage.setItem(
-      fallbackKey,
-      JSON.stringify({
-        session: [{ userId: 'user-1' }],
-        teams: [],
-        users: [
-          {
-            id: 'user-1',
-            createdAt: 1715299200000,
-            firstName: 'Ada',
-            lastName: 'Lovelace',
-            email: 'ada@example.com',
-            role: 'USER',
-            teamId: 'team-1',
-            bio: '',
-          },
-          {
-            id: 'user-2',
-            createdAt: 1715299200001,
-            firstName: 'Grace',
-            lastName: 'Hopper',
-            email: 'grace@example.com',
-            role: 'USER',
-            teamId: 'team-1',
-            bio: '',
-          },
-        ],
-        discussions: [],
-        comments: [
-          {
-            id: 'comment-1',
-            createdAt: 1715299200002,
-            body: 'Owned by someone else.',
-            discussionId: 'discussion-1',
-            authorId: 'user-2',
-          },
-        ],
-      }),
-    );
+    seedStore('session', [{ userId: 'user-1' }]);
+    seedStore('teams', []);
+    seedStore('users', [
+      {
+        id: 'user-1',
+        createdAt: 1715299200000,
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        email: 'ada@example.com',
+        role: 'USER',
+        teamId: 'team-1',
+        bio: '',
+      },
+      {
+        id: 'user-2',
+        createdAt: 1715299200001,
+        firstName: 'Grace',
+        lastName: 'Hopper',
+        email: 'grace@example.com',
+        role: 'USER',
+        teamId: 'team-1',
+        bio: '',
+      },
+    ]);
+    seedStore('discussions', []);
+    seedStore('comments', [
+      {
+        id: 'comment-1',
+        createdAt: 1715299200002,
+        body: 'Owned by someone else.',
+        discussionId: 'discussion-1',
+        authorId: 'user-2',
+      },
+    ]);
 
     await expect(
       makeLocalServices().comments.deleteComment('comment-1'),
