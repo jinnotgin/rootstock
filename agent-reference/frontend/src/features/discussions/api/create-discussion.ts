@@ -9,40 +9,40 @@ import { Discussion } from '@/types/api';
 import { getDiscussionsQueryOptions } from './get-discussions';
 
 export const createDiscussionInputSchema = z.object({
-  title: z.string().min(1, 'Required'),
-  body: z.string().min(1, 'Required'),
+	title: z.string().min(1, 'Required'),
+	body: z.string().min(1, 'Required'),
 });
 
 export type CreateDiscussionInput = z.infer<typeof createDiscussionInputSchema>;
 
 export const createDiscussion = ({
-  data,
+	data,
 }: {
-  data: CreateDiscussionInput;
+	data: CreateDiscussionInput;
 }): Promise<Discussion> => {
-  return defaultServices.discussions.createDiscussion(data);
+	return defaultServices.discussions.createDiscussion(data);
 };
 
 type UseCreateDiscussionOptions = {
-  mutationConfig?: MutationConfig<typeof createDiscussion>;
+	mutationConfig?: MutationConfig<typeof createDiscussion>;
 };
 
 export const useCreateDiscussion = ({
-  mutationConfig,
+	mutationConfig,
 }: UseCreateDiscussionOptions = {}) => {
-  const { discussions } = useServices();
-  const queryClient = useQueryClient();
+	const { discussions } = useServices();
+	const queryClient = useQueryClient();
 
-  const { onSuccess, ...restConfig } = mutationConfig || {};
+	const { onSuccess, ...restConfig } = mutationConfig || {};
 
-  return useMutation({
-    onSuccess: (...args) => {
-      queryClient.invalidateQueries({
-        queryKey: getDiscussionsQueryOptions({ discussions }).queryKey,
-      });
-      onSuccess?.(...args);
-    },
-    ...restConfig,
-    mutationFn: ({ data }) => discussions.createDiscussion(data),
-  });
+	return useMutation({
+		onSuccess: (...args) => {
+			queryClient.invalidateQueries({
+				queryKey: getDiscussionsQueryOptions({ discussions }).queryKey,
+			});
+			onSuccess?.(...args);
+		},
+		...restConfig,
+		mutationFn: ({ data }) => discussions.createDiscussion(data),
+	});
 };

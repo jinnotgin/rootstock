@@ -9,42 +9,42 @@ import { DiscussionsList } from '@/features/discussions/components/discussions-l
 import { defaultServices } from '@/services/bootstrap/services';
 
 export const clientLoader =
-  (queryClient: QueryClient) =>
-  async ({ request }: LoaderFunctionArgs) => {
-    const url = new URL(request.url);
+	(queryClient: QueryClient) =>
+	async ({ request }: LoaderFunctionArgs) => {
+		const url = new URL(request.url);
 
-    const page = Number(url.searchParams.get('page') || 1);
+		const page = Number(url.searchParams.get('page') || 1);
 
-    const query = getDiscussionsQueryOptions({
-      discussions: defaultServices.discussions,
-      page,
-    });
+		const query = getDiscussionsQueryOptions({
+			discussions: defaultServices.discussions,
+			page,
+		});
 
-    return (
-      queryClient.getQueryData(query.queryKey) ??
-      (await queryClient.fetchQuery(query))
-    );
-  };
+		return (
+			queryClient.getQueryData(query.queryKey) ??
+			(await queryClient.fetchQuery(query))
+		);
+	};
 
 const DiscussionsRoute = () => {
-  const queryClient = useQueryClient();
-  return (
-    <ContentLayout title="Discussions">
-      <div className="flex justify-end">
-        <CreateDiscussion />
-      </div>
-      <div className="mt-4">
-        <DiscussionsList
-          onDiscussionPrefetch={(id) => {
-            // Prefetch the comments data when the user hovers over the link in the list
-            queryClient.prefetchInfiniteQuery(
-              getInfiniteCommentsQueryOptions(defaultServices.comments, id),
-            );
-          }}
-        />
-      </div>
-    </ContentLayout>
-  );
+	const queryClient = useQueryClient();
+	return (
+		<ContentLayout title="Discussions">
+			<div className="flex justify-end">
+				<CreateDiscussion />
+			</div>
+			<div className="mt-4">
+				<DiscussionsList
+					onDiscussionPrefetch={(id) => {
+						// Prefetch the comments data when the user hovers over the link in the list
+						queryClient.prefetchInfiniteQuery(
+							getInfiniteCommentsQueryOptions(defaultServices.comments, id),
+						);
+					}}
+				/>
+			</div>
+		</ContentLayout>
+	);
 };
 
 export default DiscussionsRoute;

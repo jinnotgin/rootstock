@@ -7,25 +7,25 @@ import { Authorization, ROLES } from '@/lib/authorization';
 import { defaultServices } from '@/services/bootstrap/services';
 
 export const clientLoader = (queryClient: QueryClient) => async () => {
-  const query = getUsersQueryOptions(defaultServices.users);
+	const query = getUsersQueryOptions(defaultServices.users);
 
-  return (
-    queryClient.getQueryData(query.queryKey) ??
-    (await queryClient.fetchQuery(query))
-  );
+	return (
+		queryClient.getQueryData(query.queryKey) ??
+		(await queryClient.fetchQuery(query))
+	);
 };
 
 const UsersRoute = () => {
-  return (
-    <ContentLayout title="Users">
-      <Authorization
-        forbiddenFallback={<div>Only admin can view this.</div>}
-        allowedRoles={[ROLES.ADMIN]}
-      >
-        <UsersList />
-      </Authorization>
-    </ContentLayout>
-  );
+	return (
+		<ContentLayout title="Users">
+			<Authorization
+				forbiddenFallback={<div>Only admin can view this.</div>}
+				allowedRoles={[ROLES.ADMIN]}
+			>
+				<UsersList />
+			</Authorization>
+		</ContentLayout>
+	);
 };
 
 export default UsersRoute;

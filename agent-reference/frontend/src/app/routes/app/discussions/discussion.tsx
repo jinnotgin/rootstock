@@ -7,76 +7,76 @@ import { Spinner } from '@/components/ui/spinner';
 import { getInfiniteCommentsQueryOptions } from '@/features/comments/api/get-comments';
 import { Comments } from '@/features/comments/components/comments';
 import {
-  useDiscussion,
-  getDiscussionQueryOptions,
+	useDiscussion,
+	getDiscussionQueryOptions,
 } from '@/features/discussions/api/get-discussion';
 import { DiscussionView } from '@/features/discussions/components/discussion-view';
 import { defaultServices } from '@/services/bootstrap/services';
 
 export const clientLoader =
-  (queryClient: QueryClient) =>
-  async ({ params }: LoaderFunctionArgs) => {
-    const discussionId = params.discussionId as string;
+	(queryClient: QueryClient) =>
+	async ({ params }: LoaderFunctionArgs) => {
+		const discussionId = params.discussionId as string;
 
-    const discussionQuery = getDiscussionQueryOptions(
-      defaultServices.discussions,
-      discussionId,
-    );
-    const commentsQuery = getInfiniteCommentsQueryOptions(
-      defaultServices.comments,
-      discussionId,
-    );
+		const discussionQuery = getDiscussionQueryOptions(
+			defaultServices.discussions,
+			discussionId,
+		);
+		const commentsQuery = getInfiniteCommentsQueryOptions(
+			defaultServices.comments,
+			discussionId,
+		);
 
-    const promises = [
-      queryClient.getQueryData(discussionQuery.queryKey) ??
-        (await queryClient.fetchQuery(discussionQuery)),
-      queryClient.getQueryData(commentsQuery.queryKey) ??
-        (await queryClient.fetchInfiniteQuery(commentsQuery)),
-    ] as const;
+		const promises = [
+			queryClient.getQueryData(discussionQuery.queryKey) ??
+				(await queryClient.fetchQuery(discussionQuery)),
+			queryClient.getQueryData(commentsQuery.queryKey) ??
+				(await queryClient.fetchInfiniteQuery(commentsQuery)),
+		] as const;
 
-    const [discussion, comments] = await Promise.all(promises);
+		const [discussion, comments] = await Promise.all(promises);
 
-    return {
-      discussion,
-      comments,
-    };
-  };
+		return {
+			discussion,
+			comments,
+		};
+	};
 
 const DiscussionRoute = () => {
-  const params = useParams();
-  const discussionId = params.discussionId as string;
-  const discussionQuery = useDiscussion({
-    discussionId,
-  });
+	const params = useParams();
+	const discussionId = params.discussionId as string;
+	const discussionQuery = useDiscussion({
+		discussionId,
+	});
 
-  if (discussionQuery.isLoading) {
-    return (
-      <div className="flex h-48 w-full items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
+	if (discussionQuery.isLoading) {
+		return (
+			<div className="flex h-48 w-full items-center justify-center">
+				<Spinner size="lg" />
+			</div>
+		);
+	}
 
-  const discussion = discussionQuery.data?.data;
+	const discussion = discussionQuery.data?.data;
 
-  if (!discussion) return null;
+	if (!discussion) return null;
 
-  return (
-    <>
-      <ContentLayout title={discussion.title}>
-        <DiscussionView discussionId={discussionId} />
-        <div className="mt-8">
-          <ErrorBoundary
-            fallback={
-              <div>Failed to load comments. Try to refresh the page.</div>
-            }
-          >
-            <Comments discussionId={discussionId} />
-          </ErrorBoundary>
-        </div>
-      </ContentLayout>
-    </>
-  );
+	return (
+		<>
+			<ContentLayout title={discussion.title}>
+				<DiscussionView discussionId={discussionId} />
+				<div className="mt-8">
+					<ErrorBoundary
+						fallback={
+							<div>Failed to load comments. Try to refresh the page.</div>
+						}
+					>
+						<Comments discussionId={discussionId} />
+					</ErrorBoundary>
+				</div>
+			</ContentLayout>
+		</>
+	);
 };
 
 export default DiscussionRoute;

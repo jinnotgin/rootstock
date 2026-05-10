@@ -9,43 +9,43 @@ import { Comment } from '@/types/api';
 import { getInfiniteCommentsQueryOptions } from './get-comments';
 
 export const createCommentInputSchema = z.object({
-  discussionId: z.string().min(1, 'Required'),
-  body: z.string().min(1, 'Required'),
+	discussionId: z.string().min(1, 'Required'),
+	body: z.string().min(1, 'Required'),
 });
 
 export type CreateCommentInput = z.infer<typeof createCommentInputSchema>;
 
 export const createComment = ({
-  data,
+	data,
 }: {
-  data: CreateCommentInput;
+	data: CreateCommentInput;
 }): Promise<Comment> => {
-  return defaultServices.comments.createComment(data);
+	return defaultServices.comments.createComment(data);
 };
 
 type UseCreateCommentOptions = {
-  discussionId: string;
-  mutationConfig?: MutationConfig<typeof createComment>;
+	discussionId: string;
+	mutationConfig?: MutationConfig<typeof createComment>;
 };
 
 export const useCreateComment = ({
-  mutationConfig,
-  discussionId,
+	mutationConfig,
+	discussionId,
 }: UseCreateCommentOptions) => {
-  const { comments } = useServices();
-  const queryClient = useQueryClient();
+	const { comments } = useServices();
+	const queryClient = useQueryClient();
 
-  const { onSuccess, ...restConfig } = mutationConfig || {};
+	const { onSuccess, ...restConfig } = mutationConfig || {};
 
-  return useMutation({
-    onSuccess: (...args) => {
-      queryClient.invalidateQueries({
-        queryKey: getInfiniteCommentsQueryOptions(comments, discussionId)
-          .queryKey,
-      });
-      onSuccess?.(...args);
-    },
-    ...restConfig,
-    mutationFn: ({ data }) => comments.createComment(data),
-  });
+	return useMutation({
+		onSuccess: (...args) => {
+			queryClient.invalidateQueries({
+				queryKey: getInfiniteCommentsQueryOptions(comments, discussionId)
+					.queryKey,
+			});
+			onSuccess?.(...args);
+		},
+		...restConfig,
+		mutationFn: ({ data }) => comments.createComment(data),
+	});
 };

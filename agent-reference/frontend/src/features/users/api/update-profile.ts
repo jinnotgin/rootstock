@@ -7,36 +7,36 @@ import { useServices } from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
 
 export const updateProfileInputSchema = z.object({
-  email: z.string().min(1, 'Required').email('Invalid email'),
-  firstName: z.string().min(1, 'Required'),
-  lastName: z.string().min(1, 'Required'),
-  bio: z.string(),
+	email: z.string().min(1, 'Required').email('Invalid email'),
+	firstName: z.string().min(1, 'Required'),
+	lastName: z.string().min(1, 'Required'),
+	bio: z.string(),
 });
 
 export type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>;
 
 export const updateProfile = ({ data }: { data: UpdateProfileInput }) => {
-  return defaultServices.users.updateProfile(data);
+	return defaultServices.users.updateProfile(data);
 };
 
 type UseUpdateProfileOptions = {
-  mutationConfig?: MutationConfig<typeof updateProfile>;
+	mutationConfig?: MutationConfig<typeof updateProfile>;
 };
 
 export const useUpdateProfile = ({
-  mutationConfig,
+	mutationConfig,
 }: UseUpdateProfileOptions = {}) => {
-  const { users } = useServices();
-  const { refetch: refetchUser } = useUser();
+	const { users } = useServices();
+	const { refetch: refetchUser } = useUser();
 
-  const { onSuccess, ...restConfig } = mutationConfig || {};
+	const { onSuccess, ...restConfig } = mutationConfig || {};
 
-  return useMutation({
-    onSuccess: (...args) => {
-      refetchUser();
-      onSuccess?.(...args);
-    },
-    ...restConfig,
-    mutationFn: ({ data }) => users.updateProfile(data),
-  });
+	return useMutation({
+		onSuccess: (...args) => {
+			refetchUser();
+			onSuccess?.(...args);
+		},
+		...restConfig,
+		mutationFn: ({ data }) => users.updateProfile(data),
+	});
 };

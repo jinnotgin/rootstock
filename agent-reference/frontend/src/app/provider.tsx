@@ -10,52 +10,52 @@ import { Spinner } from '@/components/ui/spinner';
 import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from '@/lib/react-query';
 import {
-  AppServices,
-  AppServicesProvider,
+	AppServices,
+	AppServicesProvider,
 } from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
 
 type AppProviderProps = {
-  children: React.ReactNode;
-  services?: AppServices;
+	children: React.ReactNode;
+	services?: AppServices;
 };
 
 export const AppProvider = ({ children, services }: AppProviderProps) => {
-  const [appServices] = React.useState(() => services ?? defaultServices);
-  const [queryClient] = React.useState(
-    () =>
-      new QueryClient({
-        defaultOptions: queryConfig,
-      }),
-  );
+	const [appServices] = React.useState(() => services ?? defaultServices);
+	const [queryClient] = React.useState(
+		() =>
+			new QueryClient({
+				defaultOptions: queryConfig,
+			}),
+	);
 
-  return (
-    <React.Suspense
-      fallback={
-        <div className="flex h-screen w-screen items-center justify-center">
-          <Spinner size="xl" />
-        </div>
-      }
-    >
-      <ErrorBoundary FallbackComponent={MainErrorFallback}>
-        <HelmetProvider>
-          <AppServicesProvider value={appServices}>
-            <QueryClientProvider client={queryClient}>
-              {import.meta.env.DEV && <ReactQueryDevtools />}
-              <Notifications />
-              <AuthLoader
-                renderLoading={() => (
-                  <div className="flex h-screen w-screen items-center justify-center">
-                    <Spinner size="xl" />
-                  </div>
-                )}
-              >
-                {children}
-              </AuthLoader>
-            </QueryClientProvider>
-          </AppServicesProvider>
-        </HelmetProvider>
-      </ErrorBoundary>
-    </React.Suspense>
-  );
+	return (
+		<React.Suspense
+			fallback={
+				<div className="flex h-screen w-screen items-center justify-center">
+					<Spinner size="xl" />
+				</div>
+			}
+		>
+			<ErrorBoundary FallbackComponent={MainErrorFallback}>
+				<HelmetProvider>
+					<AppServicesProvider value={appServices}>
+						<QueryClientProvider client={queryClient}>
+							{import.meta.env.DEV && <ReactQueryDevtools />}
+							<Notifications />
+							<AuthLoader
+								renderLoading={() => (
+									<div className="flex h-screen w-screen items-center justify-center">
+										<Spinner size="xl" />
+									</div>
+								)}
+							>
+								{children}
+							</AuthLoader>
+						</QueryClientProvider>
+					</AppServicesProvider>
+				</HelmetProvider>
+			</ErrorBoundary>
+		</React.Suspense>
+	);
 };

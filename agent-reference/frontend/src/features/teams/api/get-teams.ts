@@ -6,25 +6,25 @@ import { useServices } from '@/services/app-services-provider';
 import { Team } from '@/types/api';
 
 export const getTeams = (teams: TeamStore): Promise<{ data: Team[] }> => {
-  return teams.listTeams();
+	return teams.listTeams();
 };
 
 export const getTeamsQueryOptions = (teams: TeamStore) => {
-  return queryOptions({
-    queryKey: ['teams'],
-    queryFn: () => getTeams(teams),
-  });
+	return queryOptions({
+		queryKey: ['teams'],
+		queryFn: () => getTeams(teams),
+	});
 };
 
 type UseTeamsOptions = {
-  queryConfig?: QueryConfig<typeof getTeamsQueryOptions>;
+	queryConfig?: QueryConfig<typeof getTeamsQueryOptions>;
 };
 
 export const useTeams = ({ queryConfig = {} }: UseTeamsOptions = {}) => {
-  const { teams } = useServices();
+	const { teams } = useServices();
 
-  return useQuery({
-    ...getTeamsQueryOptions(teams),
-    ...queryConfig,
-  });
+	return useQuery({
+		...getTeamsQueryOptions(teams),
+		...queryConfig,
+	});
 };

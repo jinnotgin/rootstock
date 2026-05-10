@@ -3,36 +3,36 @@ import { env } from '@/config/env';
 export type RuntimeMode = 'local' | 'dev' | 'staging' | 'production';
 export type CapabilityMode = 'local' | 'api';
 export type LocalScenario =
-  | 'empty'
-  | 'logged-out'
-  | 'admin'
-  | 'normal-user'
-  | 'expired-session'
-  | 'permission-denied'
-  | 'discussion-with-comments'
-  | 'no-comments';
+	| 'empty'
+	| 'logged-out'
+	| 'admin'
+	| 'normal-user'
+	| 'expired-session'
+	| 'permission-denied'
+	| 'discussion-with-comments'
+	| 'no-comments';
 
 export type RuntimeConfig = {
-  runtimeMode: RuntimeMode;
-  dataCapability: CapabilityMode;
-  authCapability: CapabilityMode;
-  localScenario: LocalScenario;
+	runtimeMode: RuntimeMode;
+	dataCapability: CapabilityMode;
+	authCapability: CapabilityMode;
+	localScenario: LocalScenario;
 };
 
 export const getRuntimeConfig = (): RuntimeConfig => {
-  const runtimeMode = env.RUNTIME_MODE;
-  const defaultCapability: CapabilityMode = import.meta.env.TEST
-    ? 'api'
-    : env.ENABLE_API_MOCKING
-      ? 'api'
-      : runtimeMode === 'local'
-        ? 'local'
-        : 'api';
+	const runtimeMode = env.RUNTIME_MODE;
+	const defaultCapability: CapabilityMode = import.meta.env.TEST
+		? 'api'
+		: env.ENABLE_API_MOCKING
+			? 'api'
+			: runtimeMode === 'local'
+				? 'local'
+				: 'api';
 
-  return {
-    runtimeMode,
-    dataCapability: env.DATA_CAPABILITY ?? defaultCapability,
-    authCapability: env.AUTH_CAPABILITY ?? defaultCapability,
-    localScenario: env.LOCAL_SCENARIO,
-  };
+	return {
+		runtimeMode,
+		dataCapability: env.DATA_CAPABILITY ?? defaultCapability,
+		authCapability: env.AUTH_CAPABILITY ?? defaultCapability,
+		localScenario: env.LOCAL_SCENARIO,
+	};
 };

@@ -6,25 +6,25 @@ import { useServices } from '@/services/app-services-provider';
 import { User } from '@/types/api';
 
 export const getUsers = (users: UserStore): Promise<{ data: User[] }> => {
-  return users.listUsers();
+	return users.listUsers();
 };
 
 export const getUsersQueryOptions = (users: UserStore) => {
-  return queryOptions({
-    queryKey: ['users'],
-    queryFn: () => getUsers(users),
-  });
+	return queryOptions({
+		queryKey: ['users'],
+		queryFn: () => getUsers(users),
+	});
 };
 
 type UseUsersOptions = {
-  queryConfig?: QueryConfig<typeof getUsersQueryOptions>;
+	queryConfig?: QueryConfig<typeof getUsersQueryOptions>;
 };
 
 export const useUsers = ({ queryConfig }: UseUsersOptions = {}) => {
-  const { users } = useServices();
+	const { users } = useServices();
 
-  return useQuery({
-    ...getUsersQueryOptions(users),
-    ...queryConfig,
-  });
+	return useQuery({
+		...getUsersQueryOptions(users),
+		...queryConfig,
+	});
 };

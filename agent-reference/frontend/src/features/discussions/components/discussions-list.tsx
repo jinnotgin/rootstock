@@ -14,82 +14,82 @@ import { useDiscussions } from '../api/get-discussions';
 import { DeleteDiscussion } from './delete-discussion';
 
 export type DiscussionsListProps = {
-  onDiscussionPrefetch?: (id: string) => void;
+	onDiscussionPrefetch?: (id: string) => void;
 };
 
 export const DiscussionsList = ({
-  onDiscussionPrefetch,
+	onDiscussionPrefetch,
 }: DiscussionsListProps) => {
-  const [searchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 
-  const discussionsQuery = useDiscussions({
-    page: +(searchParams.get('page') || 1),
-  });
-  const queryClient = useQueryClient();
+	const discussionsQuery = useDiscussions({
+		page: +(searchParams.get('page') || 1),
+	});
+	const queryClient = useQueryClient();
 
-  if (discussionsQuery.isLoading) {
-    return (
-      <div className="flex h-48 w-full items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
+	if (discussionsQuery.isLoading) {
+		return (
+			<div className="flex h-48 w-full items-center justify-center">
+				<Spinner size="lg" />
+			</div>
+		);
+	}
 
-  const discussions = discussionsQuery.data?.data;
-  const meta = discussionsQuery.data?.meta;
+	const discussions = discussionsQuery.data?.data;
+	const meta = discussionsQuery.data?.meta;
 
-  if (!discussions) return null;
+	if (!discussions) return null;
 
-  return (
-    <Table
-      data={discussions}
-      columns={[
-        {
-          title: 'Title',
-          field: 'title',
-        },
-        {
-          title: 'Created At',
-          field: 'createdAt',
-          Cell({ entry: { createdAt } }) {
-            return <span>{formatDate(createdAt)}</span>;
-          },
-        },
-        {
-          title: '',
-          field: 'id',
-          Cell({ entry: { id } }) {
-            return (
-              <Link
-                onMouseEnter={() => {
-                  // Prefetch the discussion data when the user hovers over the link
-                  queryClient.prefetchQuery(
-                    getDiscussionQueryOptions(defaultServices.discussions, id),
-                  );
-                  onDiscussionPrefetch?.(id);
-                }}
-                to={paths.app.discussion.getHref(id)}
-              >
-                View
-              </Link>
-            );
-          },
-        },
-        {
-          title: '',
-          field: 'id',
-          Cell({ entry: { id } }) {
-            return <DeleteDiscussion id={id} />;
-          },
-        },
-      ]}
-      pagination={
-        meta && {
-          totalPages: meta.totalPages,
-          currentPage: meta.page,
-          rootUrl: '',
-        }
-      }
-    />
-  );
+	return (
+		<Table
+			data={discussions}
+			columns={[
+				{
+					title: 'Title',
+					field: 'title',
+				},
+				{
+					title: 'Created At',
+					field: 'createdAt',
+					Cell({ entry: { createdAt } }) {
+						return <span>{formatDate(createdAt)}</span>;
+					},
+				},
+				{
+					title: '',
+					field: 'id',
+					Cell({ entry: { id } }) {
+						return (
+							<Link
+								onMouseEnter={() => {
+									// Prefetch the discussion data when the user hovers over the link
+									queryClient.prefetchQuery(
+										getDiscussionQueryOptions(defaultServices.discussions, id),
+									);
+									onDiscussionPrefetch?.(id);
+								}}
+								to={paths.app.discussion.getHref(id)}
+							>
+								View
+							</Link>
+						);
+					},
+				},
+				{
+					title: '',
+					field: 'id',
+					Cell({ entry: { id } }) {
+						return <DeleteDiscussion id={id} />;
+					},
+				},
+			]}
+			pagination={
+				meta && {
+					totalPages: meta.totalPages,
+					currentPage: meta.page,
+					rootUrl: '',
+				}
+			}
+		/>
+	);
 };

@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Spinner } from './spinner';
 
 const meta: Meta<typeof Spinner> = {
-  component: Spinner,
+	component: Spinner,
 };
 
 export default meta;
@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof Spinner>;
 
 export const Default: Story = {
-  args: {
-    size: 'md',
-  },
+	args: {
+		size: 'md',
+	},
 };

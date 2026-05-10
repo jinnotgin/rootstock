@@ -11,13 +11,13 @@ import { teamsHandlers } from './teams';
 import { usersHandlers } from './users';
 
 export const handlers = [
-  ...authHandlers,
-  ...commentsHandlers,
-  ...discussionsHandlers,
-  ...teamsHandlers,
-  ...usersHandlers,
-  http.get(`${env.API_URL}/healthcheck`, async () => {
-    await networkDelay();
-    return HttpResponse.json({ ok: true });
-  }),
+	...authHandlers,
+	...commentsHandlers,
+	...discussionsHandlers,
+	...teamsHandlers,
+	...usersHandlers,
+	http.get(`${env.API_URL}/healthcheck`, async () => {
+		await networkDelay();
+		return HttpResponse.json({ ok: true });
+	}),
 ];
