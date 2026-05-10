@@ -2,6 +2,12 @@
 
 > Reference doc for AI agents working within this codebase. Covers project structure, architectural rules, and conventions.
 
+For AI-DLC alignment with the frontend, use cases own the Go ports they
+consume, repositories and external clients are adapters, and `New...`
+constructors are wiring. Constructors are the backend equivalent of frontend
+composition-root registration; they are not ports themselves. See
+[`ai-dlc-architecture.md`](ai-dlc-architecture.md).
+
 ---
 
 ## 1. Architecture Overview

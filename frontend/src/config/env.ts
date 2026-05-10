@@ -9,6 +9,19 @@ const createEnv = () => {
       .default('local'),
     DATA_CAPABILITY: z.enum(['local', 'api']).optional(),
     AUTH_CAPABILITY: z.enum(['local', 'api']).optional(),
+    LOCAL_SCENARIO: z
+      .enum([
+        'empty',
+        'logged-out',
+        'admin',
+        'normal-user',
+        'expired-session',
+        'permission-denied',
+        'discussion-with-comments',
+        'no-comments',
+      ])
+      .optional()
+      .default('empty'),
     ENABLE_API_MOCKING: z
       .string()
       .refine((s) => s === 'true' || s === 'false')

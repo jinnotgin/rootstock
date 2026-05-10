@@ -1,6 +1,6 @@
 type Collection = 'session' | 'users' | 'teams' | 'discussions' | 'comments';
 
-type DatabaseShape = Record<Collection, any[]>;
+export type DatabaseShape = Record<Collection, any[]>;
 
 const emptyDatabase = (): DatabaseShape => ({
   session: [],
@@ -15,9 +15,11 @@ export class LocalDatabase {
   private readonly storeName = 'records';
   private readonly fallbackKey = 'ai-dlc-local-db';
 
+  constructor(private readonly initialData: DatabaseShape = emptyDatabase()) {}
+
   async read(): Promise<DatabaseShape> {
     const raw = await this.getRaw();
-    if (!raw) return emptyDatabase();
+    if (!raw) return { ...emptyDatabase(), ...this.initialData };
     return { ...emptyDatabase(), ...JSON.parse(raw) };
   }
 

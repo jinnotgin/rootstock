@@ -70,7 +70,7 @@ func (uc *CatalogUseCase) UpdateProfile(ctx context.Context, current entity.User
 
 func (uc *CatalogUseCase) DeleteUser(ctx context.Context, current entity.User, userID string) (entity.User, error) {
 	if current.Role != entity.RoleAdmin {
-		return entity.User{}, ErrUnauthorized
+		return entity.User{}, ErrForbidden
 	}
 	return uc.repo.DeleteUser(ctx, userID, current.TeamID)
 }
@@ -85,7 +85,7 @@ func (uc *CatalogUseCase) GetDiscussion(ctx context.Context, current entity.User
 
 func (uc *CatalogUseCase) CreateDiscussion(ctx context.Context, current entity.User, input DiscussionInput) (entity.Discussion, error) {
 	if current.Role != entity.RoleAdmin {
-		return entity.Discussion{}, ErrUnauthorized
+		return entity.Discussion{}, ErrForbidden
 	}
 	if strings.TrimSpace(input.Title) == "" || strings.TrimSpace(input.Body) == "" {
 		return entity.Discussion{}, ErrInvalidInput
@@ -102,7 +102,7 @@ func (uc *CatalogUseCase) CreateDiscussion(ctx context.Context, current entity.U
 
 func (uc *CatalogUseCase) UpdateDiscussion(ctx context.Context, current entity.User, discussionID string, input DiscussionInput) (entity.Discussion, error) {
 	if current.Role != entity.RoleAdmin {
-		return entity.Discussion{}, ErrUnauthorized
+		return entity.Discussion{}, ErrForbidden
 	}
 	if strings.TrimSpace(input.Title) == "" || strings.TrimSpace(input.Body) == "" {
 		return entity.Discussion{}, ErrInvalidInput
@@ -117,7 +117,7 @@ func (uc *CatalogUseCase) UpdateDiscussion(ctx context.Context, current entity.U
 
 func (uc *CatalogUseCase) DeleteDiscussion(ctx context.Context, current entity.User, discussionID string) (entity.Discussion, error) {
 	if current.Role != entity.RoleAdmin {
-		return entity.Discussion{}, ErrUnauthorized
+		return entity.Discussion{}, ErrForbidden
 	}
 	return uc.repo.DeleteDiscussion(ctx, discussionID, current.TeamID)
 }

@@ -6,7 +6,7 @@ import { getRuntimeConfig, RuntimeConfig } from './mode';
 
 export const makeServices = (config: RuntimeConfig): AppServices => {
   const apiServices = makeApiServices();
-  const localServices = makeLocalServices();
+  const localServices = makeLocalServices({ scenario: config.localScenario });
 
   return {
     auth:

@@ -1,5 +1,11 @@
 # 📡 API Layer
 
+For AI-DLC work, feature code should consume domain ports through the service
+provider instead of importing concrete HTTP calls directly. Keep Axios/fetch,
+generated OpenAPI clients, and wire-shape mapping inside API adapters. See
+[`../ai-dlc-architecture.md`](../ai-dlc-architecture.md) for the ports,
+adapters, composition-root, and OpenAPI contract model.
+
 ### Use a Single Instance of the API Client
 
 When your application interacts with either RESTful or GraphQL APIs, it is beneficial to use a single instance of the API client that has been pre-configured and can be reused throughout the application. For example, you can create a single API client instance using the native fetch API or libraries such as [axios](https://github.com/axios/axios), [graphql-request](https://github.com/prisma-labs/graphql-request), or [apollo-client](https://www.apollographql.com/docs/react/) with predefined configuration settings.

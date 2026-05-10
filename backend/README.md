@@ -10,10 +10,13 @@ go run ./cmd/app
 
 Defaults:
 
+- `APP_ENV=local`
 - `ADDRESS=:8080`
 - `DATABASE_PATH=data/app.db`
 - `JWT_SECRET=dev-secret-change-me`
 - `COOKIE_NAME=bulletproof_react_app_token`
+
+`JWT_SECRET` must be explicitly configured when `APP_ENV` is `staging` or `production`.
 
 The API is mounted under `/api` and the OpenAPI contract lives at `docs/openapi/openapi.yaml`.
 
@@ -26,4 +29,3 @@ Go constructor = New... function that injects dependencies
 ```
 
 Constructors wire ports and adapters together. They are not themselves ports or adapters.
-

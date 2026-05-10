@@ -1,5 +1,12 @@
 # 🧪 Testing
 
+For AI-DLC boundaries, test the behavior at the layer that owns it: ports and
+providers for frontend service contracts, local adapters for browser-only mode,
+API adapters for HTTP wire-shape mapping, and E2E flows for user-visible
+integration. MSW remains useful for request interception and executable
+scenarios, but it should not be the only definition of product behavior. See
+[`../ai-dlc-architecture.md`](../ai-dlc-architecture.md).
+
 As highlighted in this [tweet](https://twitter.com/rauchg/status/807626710350839808), the efficacy of testing lies in the comprehensive coverage provided by integration and end-to-end (e2e) tests. While unit tests serve a purpose in isolating and validating individual components, the true value and confidence in application functionality stem from robust integration and e2e testing strategies.
 
 ## Types of tests:

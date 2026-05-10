@@ -172,6 +172,8 @@ paths:
                 $ref: "#/components/schemas/User"
         "401":
           $ref: "#/components/responses/Error"
+        "403":
+          $ref: "#/components/responses/Error"
   /discussions:
     get:
       operationId: listDiscussions
@@ -200,6 +202,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Discussion"
         "401":
+          $ref: "#/components/responses/Error"
+        "403":
           $ref: "#/components/responses/Error"
   /discussions/{discussionId}:
     get:
@@ -238,6 +242,8 @@ paths:
                 $ref: "#/components/schemas/Discussion"
         "401":
           $ref: "#/components/responses/Error"
+        "403":
+          $ref: "#/components/responses/Error"
     delete:
       operationId: deleteDiscussion
       parameters:
@@ -250,6 +256,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Discussion"
         "401":
+          $ref: "#/components/responses/Error"
+        "403":
           $ref: "#/components/responses/Error"
   /comments:
     get:

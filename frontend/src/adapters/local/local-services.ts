@@ -2,6 +2,7 @@ import { AuthResponse, Comment, Discussion, Team, User } from '@/domain/types';
 import { AppServices } from '@/services/app-services-provider';
 
 import { LocalDatabase, createId } from './local-database';
+import { LocalScenario, localScenarioData } from './local-scenarios';
 
 const page = <T>(data: T[], currentPage = 1) => {
   const pageSize = 10;
@@ -17,6 +18,20 @@ const page = <T>(data: T[], currentPage = 1) => {
 };
 
 const now = () => Date.now();
+
+const currentUser = async (db: LocalDatabase) => {
+  const [session] = await db.collection<{ userId: string }>('session');
+  const users = await db.collection<User>('users');
+  const user = users.find((item) => item.id === session?.userId);
+  if (!user) throw new Error('Unauthorized');
+  return user;
+};
+
+const requireAdmin = async (db: LocalDatabase) => {
+  const user = await currentUser(db);
+  if (user.role !== 'ADMIN') throw new Error('Forbidden');
+  return user;
+};
 
 class LocalAuthProvider {
   constructor(private readonly db: LocalDatabase) {}
@@ -131,6 +146,7 @@ class LocalUserStore {
   }
 
   async deleteUser(userId: string) {
+    await requireAdmin(this.db);
     const users = await this.db.collection<User>('users');
     const deleted = users.find((user) => user.id === userId);
     if (!deleted) throw new Error('Not found');
@@ -159,10 +175,7 @@ class LocalDiscussionStore {
   }
 
   async createDiscussion(input: { title: string; body: string }) {
-    const [session] = await this.db.collection<{ userId: string }>('session');
-    const users = await this.db.collection<User>('users');
-    const user = users.find((item) => item.id === session?.userId);
-    if (!user) throw new Error('Unauthorized');
+    const user = await requireAdmin(this.db);
     const discussions = await this.db.collection<
       Discussion & { authorId?: string }
     >('discussions');
@@ -184,6 +197,7 @@ class LocalDiscussionStore {
     discussionId: string,
     input: { title: string; body: string },
   ) {
+    await requireAdmin(this.db);
     const discussions = await this.db.collection<
       Discussion & { authorId?: string }
     >('discussions');
@@ -195,6 +209,7 @@ class LocalDiscussionStore {
   }
 
   async deleteDiscussion(discussionId: string) {
+    await requireAdmin(this.db);
     const discussion = (await this.getDiscussion(discussionId)).data;
     const discussions = await this.db.collection<Discussion>('discussions');
     await this.db.replaceCollection(
@@ -235,10 +250,7 @@ class LocalCommentStore {
   }
 
   async createComment(input: { discussionId: string; body: string }) {
-    const [session] = await this.db.collection<{ userId: string }>('session');
-    const users = await this.db.collection<User>('users');
-    const user = users.find((item) => item.id === session?.userId);
-    if (!user) throw new Error('Unauthorized');
+    const user = await currentUser(this.db);
     const comments = await this.db.collection<Comment & { authorId?: string }>(
       'comments',
     );
@@ -256,9 +268,15 @@ class LocalCommentStore {
   }
 
   async deleteComment(commentId: string) {
+    const user = await currentUser(this.db);
     const comments = await this.db.collection<Comment>('comments');
     const comment = comments.find((item) => item.id === commentId);
     if (!comment) throw new Error('Not found');
+    const authorId =
+      'authorId' in comment ? comment.authorId : comment.author.id;
+    if (user.role !== 'ADMIN' && authorId !== user.id) {
+      throw new Error('Not found');
+    }
     await this.db.replaceCollection(
       'comments',
       comments.filter((item) => item.id !== commentId),
@@ -295,8 +313,12 @@ class ConsoleMonitor {
   }
 }
 
-export const makeLocalServices = (): AppServices => {
-  const db = new LocalDatabase();
+export const makeLocalServices = ({
+  scenario = 'empty',
+}: {
+  scenario?: LocalScenario;
+} = {}): AppServices => {
+  const db = new LocalDatabase(localScenarioData(scenario));
   return {
     auth: new LocalAuthProvider(db),
     teams: new LocalTeamStore(db),

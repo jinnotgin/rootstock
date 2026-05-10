@@ -77,3 +77,74 @@ Updated frontend env examples with runtime and capability mode variables:
 - `VITE_APP_RUNTIME_MODE`
 - `VITE_APP_AUTH_CAPABILITY`
 - `VITE_APP_DATA_CAPABILITY`
+
+Continued Phase 4 local adapter hardening:
+
+- added focused HTTP adapter coverage for the `/auth/me` response shape used by the auth port
+- added local adapter coverage for authorization-sensitive writes
+- aligned local adapters with backend authorization behavior for:
+  - admin-only user deletion
+  - admin-only discussion creation, update, and deletion
+  - comment deletion by admins or the comment author only
+
+Verification for this slice:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 14 files, 24 tests
+- `npm run build` passed
+- `GOCACHE=/tmp/go-build go test ./...` passed
+
+Vitest again emitted the sandbox-only websocket listen warning for `0.0.0.0:24678`, but the test process completed successfully.
+
+Side-track planning update:
+
+- split the reusable `agent-docs/` documentation update out of the generic hardening phase
+- added Phase 9 to `implementation-plan.md` for promoting durable AI-DLC concepts from `exfo-ai-dlc-context-v2.md` into persistent project guidance
+- clarified that effort docs remain the work log while `agent-docs/` should become the reusable guidance future agents read first
+- sharpened the permanent architecture wording so experience work stops at local adapters, while foundation work may include frontend code such as API adapters, auth/session integration, contract mapping, monitoring, and real service wiring
+
+Continued Phase 7 and Phase 9:
+
+- expanded `agent-docs/ai-dlc-architecture.md` from a glossary into persistent AI-DLC operating guidance
+- added cross-references from frontend API, project-structure, and testing guidance into the AI-DLC architecture document
+- added frontend composition-root coverage proving runtime mode and capability mode are selected independently
+- kept the sharpened boundary explicit: experience work owns the local product experience and local adapters; foundation work may live in frontend or backend once real services, contracts, auth, monitoring, or operational concerns enter
+
+Verification after this slice:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 15 files, 25 tests
+- `npm run build` passed
+- `GOCACHE=/tmp/go-build go test ./...` passed
+
+Continued Phase 4 local scenarios:
+
+- added selectable local scenario seed data behind `VITE_APP_LOCAL_SCENARIO`
+- kept the default local scenario empty
+- added seeded scenarios for:
+  - `empty`
+  - `logged-out`
+  - `admin`
+  - `normal-user`
+  - `expired-session`
+  - `permission-denied`
+  - `discussion-with-comments`
+  - `no-comments`
+- added scenario coverage for seeded current user, discussion, and comments behavior
+- moved the local default scenario question from open to answered
+
+Targeted verification:
+
+- `npm test -- --run src/adapters/local/__tests__/local-services.test.ts src/services/bootstrap/__tests__/services.test.ts` passed
+- `npm run lint` passed
+- `npm run check-types` passed
+
+Full verification after local scenarios:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 15 files, 26 tests
+- `npm run build` passed
+- `GOCACHE=/tmp/go-build go test ./...` passed

@@ -67,3 +67,87 @@ Ran `go mod tidy` to resolve backend dependencies for bcrypt and SQLite.
 Final backend verification for this slice:
 
 - `GOCACHE=/tmp/go-build go test ./...` passed
+
+Continued backend Phase 8 hardening:
+
+- added catalog use-case tests for admin-only discussion creation and team-scoped comment creation
+- added SQLite repository coverage for comment deletion authorization
+- added REST handler coverage for the `/api/auth/me` response envelope and password-hash redaction
+- updated backend guidance to cross-reference the AI-DLC mapping between frontend composition roots and Go constructor injection
+
+Verification after this slice:
+
+- `GOCACHE=/tmp/go-build go test ./...` passed
+
+Continued Phase 6/7 authorization contract alignment:
+
+- changed authenticated-but-not-authorized admin-only backend actions from `ErrUnauthorized` to `ErrForbidden`
+- verified REST handlers return HTTP 403 for authenticated users without permission
+- updated OpenAPI to include 403 responses for admin-only user and discussion mutations
+- kept unauthenticated requests mapped to 401
+
+Targeted verification:
+
+- `GOCACHE=/tmp/go-build go test ./...` passed
+- `npm test -- --run src/adapters/local/__tests__/local-services.test.ts` passed
+
+Full verification after the contract adjustment:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 15 files, 25 tests
+- `npm run build` passed
+- `GOCACHE=/tmp/go-build go test ./...` passed
+
+Continued backend Phase 8 hardening:
+
+- added SQLite repository coverage for discussion pagination and team scoping
+- added SQLite repository coverage that discussion deletion cascade-deletes comments
+- added REST handler coverage for the authenticated user/discussion/comment flow
+- moved the discussion deletion behavior question to answered: deleting a discussion cascade-deletes comments
+
+Verification after this slice:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 15 files, 26 tests
+- `npm run build` passed
+- `GOCACHE=/tmp/go-build go test ./...` passed
+
+Continued Phase 6/8 hardening:
+
+- extended REST handler coverage so regular users create comments on team discussions while admins manage discussions
+- added backend config tests for local development defaults and environment overrides
+- moved the SQLite default path question to answered: `DATABASE_PATH` is configurable and defaults to `data/app.db`
+- moved the regular-user comment permission question to answered
+
+Targeted verification:
+
+- `GOCACHE=/tmp/go-build go test ./internal/controller/restapi/v1` passed
+- `GOCACHE=/tmp/go-build go test ./config` passed
+
+Full verification after this slice:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 15 files, 26 tests
+- `npm run build` passed
+- `GOCACHE=/tmp/go-build go test ./...` passed
+
+Closed the remaining open contract/config questions after review:
+
+- preserved the current mixed mutation response shape for this sample
+- kept `{ message: string }` as the canonical minimal error envelope
+- kept handwritten OpenAPI as the source of truth for now
+- enforced JWT secret policy in backend config:
+  - local/dev may use the development default
+  - staging/production must configure `JWT_SECRET`
+- documented `APP_ENV` and the JWT policy in `backend/README.md`
+
+Verification after this slice:
+
+- `npm run lint` passed
+- `npm run check-types` passed
+- `npm test -- --run` passed: 15 files, 26 tests
+- `npm run build` passed
+- `GOCACHE=/tmp/go-build go test ./...` passed
