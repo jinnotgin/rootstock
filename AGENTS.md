@@ -16,6 +16,11 @@ Use TDD for coding changes:
 
 For effort-based work, update the relevant progress log as meaningful steps land.
 
+When `frontend/` or `backend/` is empty, missing structure, or lacks clear
+patterns for a feature, refer to `agent-reference/frontend/` or
+`agent-reference/backend/` for project layout, patterns, and methodology.
+Adopt the structure and approach, not necessarily the content verbatim.
+
 Use the durable docs for details:
 
 - Rootstock architecture: `agent-docs/rootstock-architecture/index.md`
