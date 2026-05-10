@@ -122,6 +122,10 @@ Documentation maintenance:
 - split `agent-docs/rootstock-architecture.md` into small topic files under
   `agent-docs/rootstock-architecture/` while preserving the original section
   text
+- replaced the single effort `implementation-plan.md` with `scope.md`,
+  `experience-implementation-plan.md`, and `foundation-implementation-plan.md`
+- updated `rootstock-context-v2.md` so future effort folders use separate
+  experience and foundation implementation plans
 
 Continued Phase 6/8 hardening:
 

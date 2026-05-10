@@ -100,7 +100,7 @@ Vitest again emitted the sandbox-only websocket listen warning for `0.0.0.0:2467
 Side-track planning update:
 
 - split the reusable `agent-docs/` documentation update out of the generic hardening phase
-- added Phase 9 to `implementation-plan.md` for promoting durable AI-DLC concepts from `rootstock-context-v2.md` into persistent project guidance
+- added Phase 9 to the implementation plan for promoting durable AI-DLC concepts from `rootstock-context-v2.md` into persistent project guidance
 - clarified that effort docs remain the work log while `agent-docs/` should become the reusable guidance future agents read first
 - sharpened the permanent architecture wording so experience work stops at local adapters, while foundation work may include frontend code such as API adapters, auth/session integration, contract mapping, monitoring, and real service wiring
 

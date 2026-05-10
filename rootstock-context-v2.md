@@ -341,14 +341,28 @@ The doc uses two terms to separate concerns:
 ```
 efforts/
   2026-05-08-grant-application/
+    scope.md
+    experience-implementation-plan.md
     experience-decisions.md
     experience-progress.md
+    foundation-implementation-plan.md
     foundation-decisions.md
     foundation-progress.md
     open-questions.md
 ```
 
 ### File responsibilities
+
+`scope.md` records the overall effort boundary: what is in scope, what is out
+of scope, the shared public interfaces, assumptions, and constraints that both
+experience and foundation work need to respect. It should not become a
+step-by-step execution plan.
+
+`experience-implementation-plan.md` records the planned visible product work:
+screens, flows, states, local adapters, scenario fixtures, component
+composition, frontend port usage, and experience-facing tests. It should focus
+on what the user sees and how local mode expresses the intended product
+behavior.
 
 `experience-decisions.md` records choices made about visible behavior: why a flow works a certain way, why a state was added or removed, what copy direction was chosen, what interaction pattern was picked over alternatives. Each entry should include what was decided, why, and what was rejected. This file also captures what the experience side needs from foundation (e.g. "confirm whether application status values match real API states") and what should not change without experience review (e.g. step order, user-facing labels, CTA placement).
 
@@ -374,6 +388,11 @@ submitted" felt premature since processing takes days. Changed to "Your applicat
 has been received. We'll update you within 10 working days." Reasoning captured
 in experience-decisions.md.
 ```
+
+`foundation-implementation-plan.md` records the planned trust-boundary work:
+API contracts, real adapters, backend services, persistence, auth,
+authorization, monitoring, deployment, contract tests, and hardening. It should
+focus on how the experience becomes real, safe, reliable, and observable.
 
 `foundation-decisions.md` records choices made about invisible infrastructure: why an interface was shaped a certain way, why a particular auth flow was chosen, what security constraints affect the product. Each entry should include what was decided, why, and what was rejected. This file also captures what the foundation side needs from experience (e.g. "approve simplified status mapping for the UI," "write copy for ineligible applicant state," "decide whether incomplete applications can be resumed").
 
