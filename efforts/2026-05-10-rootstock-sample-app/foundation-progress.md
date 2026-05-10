@@ -5,7 +5,7 @@
 Currently real:
 
 - Frontend-only MSW-backed sample behavior
-- Backend architecture guidance in `agent-docs/backend-practices.md`
+- Backend architecture guidance in `agent-docs/backend-practices/index.md`
 
 Currently missing:
 
@@ -118,6 +118,7 @@ Documentation maintenance:
 
 - split `agent-docs/backend-practices.md` into small topic files under
   `agent-docs/backend-practices/` while preserving the original section text
+- moved the backend practices index to `agent-docs/backend-practices/index.md`
 - split `agent-docs/rootstock-architecture.md` into small topic files under
   `agent-docs/rootstock-architecture/` while preserving the original section
   text
