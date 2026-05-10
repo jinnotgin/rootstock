@@ -1,15 +1,15 @@
 import { Plus } from 'lucide-react';
 
+import {
+	createDiscussionInputSchema,
+	useCreateDiscussion,
+} from '../api/create-discussion';
+
 import { Form, Input, Textarea } from '@/components/ui/app-form';
 import { Button } from '@/components/ui/button';
 import { FormDrawer } from '@/components/ui/form-drawer';
 import { useNotifications } from '@/components/ui/notifications';
 import { Authorization, ROLES } from '@/lib/authorization';
-
-import {
-	createDiscussionInputSchema,
-	useCreateDiscussion,
-} from '../api/create-discussion';
 
 export const CreateDiscussion = () => {
 	const { addNotification } = useNotifications();

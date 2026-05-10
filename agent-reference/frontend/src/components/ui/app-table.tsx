@@ -32,7 +32,7 @@ export type TableProps<Entry> = {
 export const Table = <Entry extends BaseEntity>({
 	data,
 	columns,
-	pagination,
+	pagination: _pagination,
 }: TableProps<Entry>) => {
 	if (!data?.length) {
 		return (

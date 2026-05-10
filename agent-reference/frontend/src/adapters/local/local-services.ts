@@ -1,8 +1,8 @@
-import { AuthResponse, Comment, Discussion, Team, User } from '@/domain/types';
-import { AppServices } from '@/services/app-services-provider';
-
 import { LocalDatabase, createId } from './local-database';
 import { LocalScenario, localScenarioData } from './local-scenarios';
+
+import { AuthResponse, Comment, Discussion, Team, User } from '@/domain/types';
+import { AppServices } from '@/services/app-services-provider';
 
 const page = <T>(data: T[], currentPage = 1) => {
 	const pageSize = 10;

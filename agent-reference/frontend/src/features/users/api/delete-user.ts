@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { getUsersQueryOptions } from './get-users';
+
 import { MutationConfig } from '@/lib/react-query';
 import { useServices } from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
-
-import { getUsersQueryOptions } from './get-users';
 
 export type DeleteUserDTO = {
 	userId: string;

@@ -52,7 +52,6 @@ const LandingRoute = () => {
 								Get started
 							</Button>
 						</div>
-
 					</div>
 				</div>
 			</div>

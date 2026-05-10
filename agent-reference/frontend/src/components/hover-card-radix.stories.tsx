@@ -1,33 +1,33 @@
-import { expect, userEvent, waitFor, within } from "@storybook/test";
+import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 // Replace nextjs-vite with the name of your framework
-import type { Meta, StoryObj } from "@storybook/react";
 
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from '@/components/ui/hover-card';
 
 /**
  * For sighted users to preview content available behind a link.
  */
 const meta = {
-  title: "ui/radix/HoverCard",
-  component: HoverCard,
-  tags: ["autodocs"],
-  argTypes: {},
-  args: {},
-  render: (args) => (
-    <HoverCard {...args}>
-      <HoverCardTrigger>Hover</HoverCardTrigger>
-      <HoverCardContent>
-        The React Framework - created and maintained by @vercel.
-      </HoverCardContent>
-    </HoverCard>
-  ),
-  parameters: {
-    layout: "centered",
-  },
+	title: 'ui/radix/HoverCard',
+	component: HoverCard,
+	tags: ['autodocs'],
+	argTypes: {},
+	args: {},
+	render: (args) => (
+		<HoverCard {...args}>
+			<HoverCardTrigger>Hover</HoverCardTrigger>
+			<HoverCardContent>
+				The React Framework - created and maintained by @vercel.
+			</HoverCardContent>
+		</HoverCard>
+	),
+	parameters: {
+		layout: 'centered',
+	},
 } satisfies Meta<typeof HoverCard>;
 
 export default meta;
@@ -44,37 +44,37 @@ export const Default: Story = {};
  * hover card opens and closes.
  */
 export const Instant: Story = {
-  args: {
-    openDelay: 0,
-    closeDelay: 0,
-  },
+	args: {
+		openDelay: 0,
+		closeDelay: 0,
+	},
 };
 
 export const ShouldShowOnHover: Story = {
-  name: "when hovering over trigger, should show hover card content",
-  tags: ["!dev", "!autodocs"],
-  play: async ({ canvasElement, step }) => {
-    const canvasBody = within(canvasElement.ownerDocument.body);
+	name: 'when hovering over trigger, should show hover card content',
+	tags: ['!dev', '!autodocs'],
+	play: async ({ canvasElement, step }) => {
+		const canvasBody = within(canvasElement.ownerDocument.body);
 
-    await step("Hover over the trigger element", async () => {
-      await userEvent.hover(await canvasBody.findByText(/hover/i));
-      await waitFor(() =>
-        expect(
-          canvasElement.ownerDocument.body.querySelector(
-            "[data-radix-popper-content-wrapper]",
-          ),
-        ).toBeVisible(),
-      );
-    });
-    await step("Unhover the trigger element", async () => {
-      await userEvent.unhover(await canvasBody.findByText(/hover/i));
-      await waitFor(() =>
-        expect(
-          canvasElement.ownerDocument.body.querySelector(
-            "[data-radix-popper-content-wrapper]",
-          ),
-        ).toBeNull(),
-      );
-    });
-  },
+		await step('Hover over the trigger element', async () => {
+			await userEvent.hover(await canvasBody.findByText(/hover/i));
+			await waitFor(() =>
+				expect(
+					canvasElement.ownerDocument.body.querySelector(
+						'[data-radix-popper-content-wrapper]',
+					),
+				).toBeVisible(),
+			);
+		});
+		await step('Unhover the trigger element', async () => {
+			await userEvent.unhover(await canvasBody.findByText(/hover/i));
+			await waitFor(() =>
+				expect(
+					canvasElement.ownerDocument.body.querySelector(
+						'[data-radix-popper-content-wrapper]',
+					),
+				).toBeNull(),
+			);
+		});
+	},
 };

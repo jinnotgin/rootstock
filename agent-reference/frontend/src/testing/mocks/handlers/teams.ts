@@ -1,9 +1,9 @@
 import { HttpResponse, http } from 'msw';
 
-import { env } from '@/config/env';
-
 import { db } from '../db';
 import { networkDelay } from '../utils';
+
+import { env } from '@/config/env';
 
 export const teamsHandlers = [
 	http.get(`${env.API_URL}/teams`, async () => {

@@ -1,3 +1,5 @@
+import { default as DiscussionRoute } from '../discussion';
+
 import {
 	renderApp,
 	screen,
@@ -7,8 +9,6 @@ import {
 	createUser,
 	within,
 } from '@/testing/test-utils';
-
-import { default as DiscussionRoute } from '../discussion';
 
 const renderDiscussion = async () => {
 	const fakeUser = await createUser();
@@ -76,6 +76,7 @@ test('should update discussion', async () => {
 
 test(
 	'should create and delete a comment on the discussion',
+	{ timeout: 20000 },
 	async () => {
 		await renderDiscussion();
 
@@ -138,8 +139,5 @@ test(
 		await waitFor(() => {
 			expect(within(commentsList).queryByText(comment)).not.toBeInTheDocument();
 		});
-	},
-	{
-		timeout: 20000,
 	},
 );

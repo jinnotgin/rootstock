@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Comment, User } from '@/types/api';
-
 import { useUser } from './auth';
+
+import { Comment, User } from '@/types/api';
 
 export enum ROLES {
 	ADMIN = 'ADMIN',

@@ -2,6 +2,8 @@ import { Home, PanelLeft, Folder, Users, User2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router';
 
+import { Link } from '../ui/link';
+
 import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,22 +13,16 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-	Sheet,
-	SheetContent,
-	SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { paths } from '@/config/paths';
 import { useLogout } from '@/lib/auth';
 import { ROLES, useAuthorization } from '@/lib/authorization';
 import { cn } from '@/utils/cn';
 
-import { Link } from '../ui/link';
-
 type SideNavigationItem = {
 	name: string;
 	to: string;
-	icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+	icon: (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element;
 };
 
 const Logo = () => {

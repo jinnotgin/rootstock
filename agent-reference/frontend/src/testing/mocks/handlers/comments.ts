@@ -1,9 +1,9 @@
 import { HttpResponse, http } from 'msw';
 
-import { env } from '@/config/env';
-
 import { db, persistDb } from '../db';
 import { networkDelay, requireAuth, sanitizeUser } from '../utils';
+
+import { env } from '@/config/env';
 
 type CreateCommentBody = {
 	body: string;

@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { getDiscussionsQueryOptions } from './get-discussions';
+
 import { MutationConfig } from '@/lib/react-query';
 import { useServices } from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
-
-import { getDiscussionsQueryOptions } from './get-discussions';
 
 export const deleteDiscussion = ({
 	discussionId,

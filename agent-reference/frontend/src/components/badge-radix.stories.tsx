@@ -1,31 +1,31 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Badge } from "@/components/ui/badge";
+import { Badge } from '@/components/ui/badge';
 
 /**
  * Displays a badge or a component that looks like a badge.
  */
 const meta = {
-  title: "ui/radix/Badge",
-  component: Badge,
-  tags: ["autodocs"],
-  argTypes: {
-    variant: {
-      control: "select",
-      options: ["default", "secondary", "destructive", "outline"],
-    },
-    children: {
-      control: "text",
-      description: "Badge content",
-    },
-  },
-  args: {
-    variant: "default",
-    children: "Badge",
-  },
-  parameters: {
-    layout: "centered",
-  },
+	title: 'ui/radix/Badge',
+	component: Badge,
+	tags: ['autodocs'],
+	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['default', 'secondary', 'destructive', 'outline'],
+		},
+		children: {
+			control: 'text',
+			description: 'Badge content',
+		},
+	},
+	args: {
+		variant: 'default',
+		children: 'Badge',
+	},
+	parameters: {
+		layout: 'centered',
+	},
 } satisfies Meta<typeof Badge>;
 
 export default meta;
@@ -42,9 +42,9 @@ export const Default: Story = {};
  * into the interface while still signaling minor updates or statuses.
  */
 export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-  },
+	args: {
+		variant: 'secondary',
+	},
 };
 
 /**
@@ -52,9 +52,9 @@ export const Secondary: Story = {
  * immediate attention.
  */
 export const Destructive: Story = {
-  args: {
-    variant: "destructive",
-  },
+	args: {
+		variant: 'destructive',
+	},
 };
 
 /**
@@ -62,7 +62,7 @@ export const Destructive: Story = {
  * emphasizing clarity and subtlety..
  */
 export const Outline: Story = {
-  args: {
-    variant: "outline",
-  },
+	args: {
+		variant: 'outline',
+	},
 };

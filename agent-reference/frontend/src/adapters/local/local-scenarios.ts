@@ -1,6 +1,6 @@
-import { Comment, Discussion, Team, User } from '@/domain/types';
-
 import { DatabaseShape } from './local-database';
+
+import { Comment, Discussion, Team, User } from '@/domain/types';
 
 export type LocalScenario =
 	| 'empty'

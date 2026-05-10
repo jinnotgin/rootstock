@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { getInfiniteCommentsQueryOptions } from './get-comments';
+
 import { MutationConfig } from '@/lib/react-query';
 import { useServices } from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
-
-import { getInfiniteCommentsQueryOptions } from './get-comments';
 
 export const deleteComment = ({ commentId }: { commentId: string }) => {
 	return defaultServices.comments.deleteComment(commentId);

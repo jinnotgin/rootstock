@@ -1,16 +1,16 @@
 import { Pen } from 'lucide-react';
 
-import { Form, Input, Textarea } from '@/components/ui/app-form';
-import { Button } from '@/components/ui/button';
-import { FormDrawer } from '@/components/ui/form-drawer';
-import { useNotifications } from '@/components/ui/notifications';
-import { Authorization, ROLES } from '@/lib/authorization';
-
 import { useDiscussion } from '../api/get-discussion';
 import {
 	updateDiscussionInputSchema,
 	useUpdateDiscussion,
 } from '../api/update-discussion';
+
+import { Form, Input, Textarea } from '@/components/ui/app-form';
+import { Button } from '@/components/ui/button';
+import { FormDrawer } from '@/components/ui/form-drawer';
+import { useNotifications } from '@/components/ui/notifications';
+import { Authorization, ROLES } from '@/lib/authorization';
 
 type UpdateDiscussionProps = {
 	discussionId: string;

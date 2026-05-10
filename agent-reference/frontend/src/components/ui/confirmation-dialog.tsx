@@ -64,16 +64,11 @@ export const ConfirmationDialog = ({
 					</DialogTitle>
 				</DialogHeader>
 
-				<div className="text-center sm:text-left">
-					{body && <p>{body}</p>}
-				</div>
+				<div className="text-center sm:text-left">{body && <p>{body}</p>}</div>
 
 				<DialogFooter>
 					{confirmButton}
-					<Button
-						variant="outline"
-						onClick={close}
-					>
+					<Button variant="outline" onClick={close}>
 						{cancelButtonText}
 					</Button>
 				</DialogFooter>

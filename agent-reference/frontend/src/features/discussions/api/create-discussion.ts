@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
+import { getDiscussionsQueryOptions } from './get-discussions';
+
 import { MutationConfig } from '@/lib/react-query';
 import { useServices } from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
 import { Discussion } from '@/types/api';
-
-import { getDiscussionsQueryOptions } from './get-discussions';
 
 export const createDiscussionInputSchema = z.object({
 	title: z.string().min(1, 'Required'),

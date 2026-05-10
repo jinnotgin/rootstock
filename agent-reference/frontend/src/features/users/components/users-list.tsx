@@ -1,10 +1,10 @@
-import { Table } from '@/components/ui/app-table';
-import { Spinner } from '@/components/ui/spinner';
-import { formatDate } from '@/utils/format';
-
 import { useUsers } from '../api/get-users';
 
 import { DeleteUser } from './delete-user';
+
+import { Table } from '@/components/ui/app-table';
+import { Spinner } from '@/components/ui/spinner';
+import { formatDate } from '@/utils/format';
 
 export const UsersList = () => {
 	const usersQuery = useUsers();

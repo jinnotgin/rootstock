@@ -11,8 +11,8 @@ import {
 import { type FieldError } from 'react-hook-form';
 import { ZodType, z } from 'zod';
 
-import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
 // Error display
@@ -187,7 +187,7 @@ type FormProps<TFormValues extends FieldValues, Schema> = {
 };
 
 const Form = <
-	Schema extends ZodType<any, any, any>,
+	Schema extends ZodType<FieldValues>,
 	TFormValues extends FieldValues = z.infer<Schema>,
 >({
 	onSubmit,
@@ -197,7 +197,10 @@ const Form = <
 	id,
 	schema,
 }: FormProps<TFormValues, Schema>) => {
-	const form = useForm({ ...options, resolver: zodResolver(schema) });
+	const form = useForm<TFormValues>({
+		...options,
+		resolver: zodResolver(schema as any),
+	});
 	return (
 		<form
 			className={cn('space-y-6', className)}

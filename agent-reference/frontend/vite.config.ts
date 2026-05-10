@@ -4,11 +4,11 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
 	base: './',
-	plugins: [tailwindcss(), react(), viteTsconfigPaths()],
+	plugins: [tailwindcss(), react()],
+	resolve: { tsconfigPaths: true },
 	server: {
 		port: 3770,
 		// E2E proxy: forwards /api requests to the mock server so the browser

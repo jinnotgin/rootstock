@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
+import { getInfiniteCommentsQueryOptions } from './get-comments';
+
 import { MutationConfig } from '@/lib/react-query';
 import { useServices } from '@/services/app-services-provider';
 import { defaultServices } from '@/services/bootstrap/services';
 import { Comment } from '@/types/api';
-
-import { getInfiniteCommentsQueryOptions } from './get-comments';
 
 export const createCommentInputSchema = z.object({
 	discussionId: z.string().min(1, 'Required'),

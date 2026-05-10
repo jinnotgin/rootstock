@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { AppServices } from '@/services/app-services-provider';
-
 import { makeServices } from '../services';
+
+import { AppServices } from '@/services/app-services-provider';
 
 const mocks = vi.hoisted(() => {
 	const serviceSet = (label: string) =>

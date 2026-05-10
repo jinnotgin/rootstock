@@ -1,10 +1,10 @@
 import { Trash } from 'lucide-react';
 
+import { useDeleteComment } from '../api/delete-comment';
+
 import { Button } from '@/components/ui/button';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { useNotifications } from '@/components/ui/notifications';
-
-import { useDeleteComment } from '../api/delete-comment';
 
 type DeleteCommentProps = {
 	id: string;

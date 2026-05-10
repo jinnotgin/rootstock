@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
+import { renderApp } from '../test-utils';
+
 import { useServices } from '@/services/app-services-provider';
 import { makeTestServices } from '@/testing/adapters/make-test-services';
-
-import { renderApp } from '../test-utils';
 
 const Probe = () => {
 	const { flags } = useServices();

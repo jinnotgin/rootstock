@@ -1,8 +1,6 @@
 import Cookies from 'js-cookie';
 import { HttpResponse, http } from 'msw';
 
-import { env } from '@/config/env';
-
 import { db, persistDb } from '../db';
 import {
 	authenticate,
@@ -11,6 +9,8 @@ import {
 	AUTH_COOKIE,
 	networkDelay,
 } from '../utils';
+
+import { env } from '@/config/env';
 
 type RegisterBody = {
 	firstName: string;
@@ -97,8 +97,8 @@ export const authHandlers = [
 
 			return HttpResponse.json(result, {
 				headers: {
-					// with a real API servier, the token cookie should also be Secure and HttpOnly
-					'Set-Cookie': `${AUTH_COOKIE}=${result.jwt}; Path=/;`,
+					// with a real API server, the token cookie should also be Secure and HttpOnly
+					'Set-Cookie': `${AUTH_COOKIE}=${result.jwt}; Path=/; SameSite=Lax`,
 				},
 			});
 		} catch (error: any) {
@@ -121,8 +121,8 @@ export const authHandlers = [
 
 			return HttpResponse.json(result, {
 				headers: {
-					// with a real API servier, the token cookie should also be Secure and HttpOnly
-					'Set-Cookie': `${AUTH_COOKIE}=${result.jwt}; Path=/;`,
+					// with a real API server, the token cookie should also be Secure and HttpOnly
+					'Set-Cookie': `${AUTH_COOKIE}=${result.jwt}; Path=/; SameSite=Lax`,
 				},
 			});
 		} catch (error: any) {
@@ -143,7 +143,7 @@ export const authHandlers = [
 			{ message: 'Logged out' },
 			{
 				headers: {
-					'Set-Cookie': `${AUTH_COOKIE}=; Path=/;`,
+					'Set-Cookie': `${AUTH_COOKIE}=; Path=/; SameSite=Lax`,
 				},
 			},
 		);

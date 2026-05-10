@@ -1,8 +1,8 @@
+import { getRuntimeConfig, RuntimeConfig } from './mode';
+
 import { makeApiServices } from '@/adapters/http/api-services';
 import { makeLocalServices } from '@/adapters/local/local-services';
 import { AppServices } from '@/services/app-services-provider';
-
-import { getRuntimeConfig, RuntimeConfig } from './mode';
 
 export const makeServices = (config: RuntimeConfig): AppServices => {
 	const apiServices = makeApiServices();
