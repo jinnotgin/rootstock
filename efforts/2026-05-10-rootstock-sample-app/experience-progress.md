@@ -184,3 +184,33 @@ Verification:
 - `npm test -- --run` passed: 16 files, 27 tests
 - `npm run build` passed
 - `go test ./...` passed
+
+Fixed reference frontend E2E tests (cross-origin cookie failure):
+
+Root cause: the Vite dev server (port 3770) and the Express mock server
+(port 8770) ran on different origins. The mock server's `Set-Cookie` header
+set cookies scoped to `localhost:8770`, but the browser refused to send them
+on cross-origin requests from `localhost:3770`. Playwright's `storageState`
+captured an empty cookie jar, so all authenticated test specs saw the login
+page instead of the app.
+
+Changes:
+
+- added a Vite `server.proxy` rule forwarding `/api` to `http://localhost:8770`
+  so the browser and API share the same origin during E2E runs
+- created `.env.e2e` with `VITE_APP_API_URL=/api` (relative, same-origin) and
+  `api` capability mode; Playwright starts the dev server with `--mode e2e`
+- updated `.env.example-e2e` to match the new relative API URL
+- changed the default `APP_MOCK_API_PORT` in `env.ts` from `8080` to `8770`
+  to match the `API_URL` default of `http://localhost:8770/api`
+- replaced the `test-e2e` script: removed `pm2` dependency; Playwright's
+  `webServer` array now starts both the mock server and the Vite dev server
+- set `baseURL` in `playwright.config.ts` so tests use consistent URLs
+- updated `playwright.config.ts` `webServer` to an array with separate entries
+  for the mock server (port 8770) and the Vite dev server (port 3770, mode e2e)
+
+Verification:
+
+- `npm run check-types` passed
+- `npm test -- --run` passed: 16 files, 27 tests
+- `npm run test-e2e` passed: 3 tests (setup, profile, smoke)

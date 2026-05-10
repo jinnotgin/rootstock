@@ -50,3 +50,11 @@ Initial scenarios:
 
 Reasoning: scenarios are the experience contract for foundation work. They make visible intent testable.
 
+### Use a Vite proxy for E2E tests instead of cross-origin cookies
+
+Decision: E2E tests run the Vite dev server with a proxy rule that forwards `/api` requests to the Express mock server, keeping the browser and API on the same origin.
+
+Reasoning: the mock server sets auth cookies via `Set-Cookie`. When the browser and API are on different ports (3770 vs 8770), the browser treats them as different origins and refuses to store or send the cookies. Playwright's `storageState` then captures an empty cookie jar, breaking all authenticated test specs. A same-origin proxy eliminates the cross-origin cookie problem without requiring `SameSite=None; Secure` attributes or other workarounds.
+
+Rejected: adding `SameSite=None; Secure` to mock server cookies (requires HTTPS even in local dev). Also rejected: switching E2E tests to use MSW browser service worker instead of the Express mock server (would diverge from the API adapter path that E2E tests are meant to exercise).
+

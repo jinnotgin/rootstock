@@ -26,7 +26,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3770',
+    baseURL: `http://localhost:${PORT}`,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -47,10 +47,18 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: `yarn dev --port ${PORT}`,
-    timeout: 10 * 1000,
-    port: PORT,
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: 'npm run run-mock-server',
+      port: 8770,
+      timeout: 10 * 1000,
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: `npm run dev -- --port ${PORT} --mode e2e`,
+      port: PORT,
+      timeout: 10 * 1000,
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });
