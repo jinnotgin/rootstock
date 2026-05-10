@@ -60,6 +60,10 @@ respect. Not an execution plan.
 screens, flows, states, local adapters, fixtures, component composition,
 port usage, experience-facing tests.
 
+Structure the plan as vertical slices (end-to-end user stories), ordered by
+dependency: a slice that others depend on comes first. Once ordered, implement
+each slice fully before starting the next.
+
 **`experience-decisions.md`** — Choices about visible behavior: why a flow
 works a certain way, why a state was added or removed, what was picked over
 alternatives. Each entry records what was decided, why, and what was
@@ -86,6 +90,10 @@ processing takes days. Reasoning in experience-decisions.md.
 **`foundation-implementation-plan.md`** — Planned trust-boundary work: API
 contracts, real adapters, backend services, persistence, auth,
 authorization, monitoring, deployment, contract tests, hardening.
+
+Structure the plan as vertical slices (end-to-end user stories), ordered by
+dependency: a slice that others depend on comes first. Once ordered, implement
+each slice fully before starting the next.
 
 **`foundation-decisions.md`** — Choices about invisible infrastructure: why
 an interface was shaped a certain way, security constraints that affect the
