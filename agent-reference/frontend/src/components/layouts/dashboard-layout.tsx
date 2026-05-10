@@ -4,19 +4,23 @@ import { NavLink, useNavigate, useNavigation } from 'react-router';
 
 import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
-import { paths } from '@/config/paths';
-import { useLogout } from '@/lib/auth';
-import { ROLES, useAuthorization } from '@/lib/authorization';
-import { cn } from '@/utils/cn';
-
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from '../ui/dropdown';
+} from '@/components/ui/dropdown-menu';
+import {
+	Sheet,
+	SheetContent,
+	SheetTrigger,
+} from '@/components/ui/sheet';
+import { paths } from '@/config/paths';
+import { useLogout } from '@/lib/auth';
+import { ROLES, useAuthorization } from '@/lib/authorization';
+import { cn } from '@/utils/cn';
+
 import { Link } from '../ui/link';
 
 type SideNavigationItem = {
@@ -30,7 +34,7 @@ const Logo = () => {
 		<Link className="flex items-center text-white" to={paths.home.getHref()}>
 			<img className="h-8 w-auto" src={logo} alt="Workflow" />
 			<span className="text-sm font-semibold text-white">
-				Bulletproof React
+				Rootstock Bulletproof React
 			</span>
 		</Link>
 	);
@@ -127,14 +131,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
 				<header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:justify-end sm:border-0 sm:bg-transparent sm:px-6">
 					<Progress />
-					<Drawer>
-						<DrawerTrigger asChild>
+					<Sheet>
+						<SheetTrigger asChild>
 							<Button size="icon" variant="outline" className="sm:hidden">
 								<PanelLeft className="size-5" />
 								<span className="sr-only">Toggle Menu</span>
 							</Button>
-						</DrawerTrigger>
-						<DrawerContent
+						</SheetTrigger>
+						<SheetContent
 							side="left"
 							className="bg-black pt-10 text-white sm:max-w-60"
 						>
@@ -166,8 +170,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 									</NavLink>
 								))}
 							</nav>
-						</DrawerContent>
-					</Drawer>
+						</SheetContent>
+					</Sheet>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button

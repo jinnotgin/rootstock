@@ -1,7 +1,7 @@
 import { Trash } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { ConfirmationDialog } from '@/components/ui/dialog';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { useNotifications } from '@/components/ui/notifications';
 import { Authorization, ROLES } from '@/lib/authorization';
 

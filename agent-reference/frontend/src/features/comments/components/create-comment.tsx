@@ -1,7 +1,8 @@
 import { Plus } from 'lucide-react';
 
+import { Form, Textarea } from '@/components/ui/app-form';
 import { Button } from '@/components/ui/button';
-import { Form, FormDrawer, Textarea } from '@/components/ui/form';
+import { FormDrawer } from '@/components/ui/form-drawer';
 import { useNotifications } from '@/components/ui/notifications';
 
 import {

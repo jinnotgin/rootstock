@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Link, useSearchParams } from 'react-router';
 
+import { Form, Input, Select, Switch } from '@/components/ui/app-form';
 import { Button } from '@/components/ui/button';
-import { Form, Input, Select, Label, Switch } from '@/components/ui/form';
+import { Label } from '@/components/ui/label';
 import { paths } from '@/config/paths';
 import { useRegister, registerInputSchema } from '@/lib/auth';
 import { Team } from '@/types/api';

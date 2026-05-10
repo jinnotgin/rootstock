@@ -1,7 +1,8 @@
 import { Pen } from 'lucide-react';
 
+import { Form, Input, Textarea } from '@/components/ui/app-form';
 import { Button } from '@/components/ui/button';
-import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
+import { FormDrawer } from '@/components/ui/form-drawer';
 import { useNotifications } from '@/components/ui/notifications';
 import { useUser } from '@/lib/auth';
 

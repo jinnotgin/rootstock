@@ -2,8 +2,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
 import { Link } from '@/components/ui/link';
+import { Table } from '@/components/ui/app-table';
 import { Spinner } from '@/components/ui/spinner';
-import { Table } from '@/components/ui/table';
 import { paths } from '@/config/paths';
 import { defaultServices } from '@/services/bootstrap/services';
 import { formatDate } from '@/utils/format';
