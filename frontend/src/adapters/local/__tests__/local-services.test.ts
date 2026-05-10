@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeLocalServices } from '../local-services';
 
-const fallbackKey = 'ai-dlc-local-db';
+const fallbackKey = 'rootstock-local-db';
 
 describe('makeLocalServices', () => {
   beforeEach(() => {

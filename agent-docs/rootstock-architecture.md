@@ -1,4 +1,4 @@
-# AI-DLC architecture alignment
+# Rootstock architecture alignment
 
 This project uses an experience-first, foundation-backed AI-DLC model.
 Experience work produces running product experience: screens, flows, states,

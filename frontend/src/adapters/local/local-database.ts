@@ -11,9 +11,9 @@ const emptyDatabase = (): DatabaseShape => ({
 });
 
 export class LocalDatabase {
-  private readonly databaseName = 'ai-dlc-local-db';
+  private readonly databaseName = 'rootstock-local-db';
   private readonly storeName = 'records';
-  private readonly fallbackKey = 'ai-dlc-local-db';
+  private readonly fallbackKey = 'rootstock-local-db';
 
   constructor(private readonly initialData: DatabaseShape = emptyDatabase()) {}
 

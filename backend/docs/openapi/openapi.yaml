@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: AI-DLC Sample App API
+  title: Rootstock Sample App API
   version: 0.1.0
   description: Contract for the auth, teams, users, discussions, and comments sample app.
 servers:

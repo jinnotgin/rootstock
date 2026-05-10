@@ -1,4 +1,4 @@
-# AI-DLC: Experience-first, foundation-backed
+# Rootstock: Experience-first, foundation-backed
 
 ## A note on roles
 
@@ -12,7 +12,7 @@ In all cases, the work happens in the codebase: directly or through LLM tools th
 
 ## What this is
 
-A working model for teams where experience work (screens, flows, states, copy, interaction behavior) is built and iterated using LLM tools, while foundation work (auth, persistence, authorization, integrations, security, data integrity) is owned separately and connected progressively.
+Rootstock is a working model for teams where experience work (screens, flows, states, copy, interaction behavior) is built and iterated using LLM tools, while foundation work (auth, persistence, authorization, integrations, security, data integrity) is owned separately and connected progressively.
 
 The front end starts in a fully local mode and later connects to real services without rewriting the product experience.
 
@@ -28,7 +28,7 @@ Both layers produce working code. Experience work produces running front-end cod
 
 ## Two layers
 
-The product has an experience layer and a foundation layer.
+Rootstock separates the product into an experience layer and a foundation layer.
 
 The **experience layer** is what the user sees and touches: screens, flows, components, copy, states, layout, feedback, interaction behavior. This layer is built as running front-end code, not just wireframes or design files.
 
@@ -40,7 +40,7 @@ Both layers shape the same product from different risk perspectives.
 
 ## App modes
 
-The app should support running at different levels of real-ness. The boundary between "mocked" and "real" moves progressively, and the architecture should support any point on that spectrum.
+Rootstock apps should support running at different levels of real-ness. The boundary between "mocked" and "real" moves progressively, and the architecture should support any point on that spectrum.
 
 ```
 local       → all mocked, browser-only (memory, localStorage, IndexedDB, fixture data)
@@ -51,7 +51,7 @@ production  → real auth, production APIs, real integrations
 
 Local mode is useful for prototypes, demos, design validation, usability testing, onboarding, and AI-assisted iteration.
 
-Connected modes (dev, staging, production) progressively introduce real identity, real persistence, and real third-party integrations. As more services become real, the app moves from being a designed experience to being part of a trusted system.
+Connected modes (dev, staging, production) progressively introduce real identity, real persistence, and real third-party integrations. As more services become real, Rootstock moves from a designed experience to part of a trusted system.
 
 Local mode should stay alive even after connected modes exist. It remains valuable for design iteration, testing edge cases, sales demos, new teammate onboarding, and reproducing bugs.
 
@@ -79,7 +79,7 @@ Frontend build tools (Vite, Next.js, and similar) expose prefixed environment va
 
 ## Core architectural principle
 
-The same front-end code should run against any mode. UI components should not know whether they talk to IndexedDB, Supabase, SingPass, or fixture data.
+The same Rootstock front-end code should run against any mode. UI components should not know whether they talk to IndexedDB, Supabase, SingPass, or fixture data.
 
 The app depends on stable interfaces:
 
@@ -418,7 +418,7 @@ Do not document every component prop, every file, every small styling change, or
 
 ## Testing
 
-Tests in an AI-DLC project serve a specific purpose beyond general quality: they are what prevent the experience and foundation layers from silently diverging as each side evolves.
+Tests in Rootstock serve a specific purpose beyond general quality: they are what prevent the experience and foundation layers from silently diverging as each side evolves.
 
 Four layers of testing serve different concerns:
 
@@ -456,4 +456,4 @@ Experience work can move fast with LLM tools: visible behavior, local state, dem
 
 Foundation involvement is needed for: real identity, real personal data, shared records, permissions, databases, third-party integrations, security, compliance.
 
-The bridge between experience and foundation is a stable front-end contract: design system components (grounded through a registry or workshop), domain types, service interfaces, mocks, replaceable adapters, and a composition root that maps the current mode to the correct implementations. Request interceptors and scenario fixtures make local mode productive. Contract tests prevent the two layers from diverging. The effort layer preserves the context that code alone cannot carry.
+Rootstock's bridge between experience and foundation is a stable front-end contract: design system components (grounded through a registry or workshop), domain types, service interfaces, mocks, replaceable adapters, and a composition root that maps the current mode to the correct implementations. Request interceptors and scenario fixtures make local mode productive. Contract tests prevent the two layers from diverging. The effort layer preserves the context that code alone cannot carry.

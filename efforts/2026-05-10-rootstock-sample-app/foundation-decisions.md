@@ -1,4 +1,4 @@
-# Foundation decisions: AI-DLC sample app
+# Foundation decisions: Rootstock sample app
 
 ## 2026-05-10
 

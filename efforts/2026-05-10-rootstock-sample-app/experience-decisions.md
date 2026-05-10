@@ -1,4 +1,4 @@
-# Experience decisions: AI-DLC sample app
+# Experience decisions: Rootstock sample app
 
 ## 2026-05-10
 

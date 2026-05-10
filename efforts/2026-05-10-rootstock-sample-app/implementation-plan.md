@@ -1,8 +1,8 @@
-# Implementation plan: AI-DLC sample app
+# Implementation plan: Rootstock sample app
 
 ## Summary
 
-Convert the current Bulletproof React sample into an AI-DLC sample app with aligned frontend and Go backend architecture:
+Convert the current Bulletproof React sample into an Rootstock sample app with aligned frontend and Go backend architecture:
 
 - Keep the current sample domain: auth, teams, users, discussions, comments.
 - Add frontend ports/adapters with a composition root so local/mock and true-backend modes use the same UI code.
@@ -12,7 +12,7 @@ Convert the current Bulletproof React sample into an AI-DLC sample app with alig
 
 ## Phase 1: Baseline and effort docs
 
-- Create this effort folder under `efforts/2026-05-10-ai-dlc-sample-app/`.
+- Create this effort folder under `efforts/2026-05-10-rootstock-sample-app/`.
 - Record current reality:
   - frontend works through MSW/local mock data
   - backend folder is empty
@@ -135,13 +135,13 @@ Convert the current Bulletproof React sample into an AI-DLC sample app with alig
 
 ## Phase 9: Persistent agent-docs update
 
-- Promote the durable concepts from `exfo-ai-dlc-context-v2.md` into `agent-docs/` so future agents can follow the architecture without reading effort-local context first.
+- Promote the durable concepts from `rootstock-context-v2.md` into `agent-docs/` so future agents can follow the architecture without reading effort-local context first.
 - Sharpen the experience/foundation boundary:
   - experience work includes screens, flows, fixtures, and local adapters
   - experience work stops at the local adapters
   - foundation work can live in the frontend as well as the backend
   - frontend API adapters, auth/session integration, real service mapping, monitoring, and contract enforcement are foundation work
-- Update `agent-docs/ai-dlc-architecture.md` with the implemented sample app mapping:
+- Update `agent-docs/rootstock-architecture.md` with the implemented sample app mapping:
   - runtime mode versus capability mode
   - frontend ports, adapters, and composition root
   - local adapters, API adapters, and MSW's remaining role

@@ -1,4 +1,4 @@
-# Open questions: AI-DLC sample app
+# Open questions: Rootstock sample app
 
 ## Current questions
 

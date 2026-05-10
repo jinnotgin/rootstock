@@ -4,7 +4,7 @@ AI-DLC apps add a service boundary to the usual feature-based structure:
 `domain/` for product types, `ports/` for stable interfaces, `adapters/` for
 local/API/vendor implementations, and `services/` for composition-root wiring.
 Features should depend on ports through `useServices()`, not on concrete
-adapters. See [`../ai-dlc-architecture.md`](../ai-dlc-architecture.md).
+adapters. See [`../rootstock-architecture.md`](../rootstock-architecture.md).
 
 Most of the code lives in the `src` folder and looks something like this:
 

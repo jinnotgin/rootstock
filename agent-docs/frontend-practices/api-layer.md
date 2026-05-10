@@ -3,7 +3,7 @@
 For AI-DLC work, feature code should consume domain ports through the service
 provider instead of importing concrete HTTP calls directly. Keep Axios/fetch,
 generated OpenAPI clients, and wire-shape mapping inside API adapters. See
-[`../ai-dlc-architecture.md`](../ai-dlc-architecture.md) for the ports,
+[`../rootstock-architecture.md`](../rootstock-architecture.md) for the ports,
 adapters, composition-root, and OpenAPI contract model.
 
 ### Use a Single Instance of the API Client

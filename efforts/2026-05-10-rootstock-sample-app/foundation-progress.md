@@ -1,4 +1,4 @@
-# Foundation progress: AI-DLC sample app
+# Foundation progress: Rootstock sample app
 
 ## Current foundation state
 
@@ -44,7 +44,7 @@ The backend should follow the clean architecture guidance already present in the
 - constructors inject dependencies
 - app bootstrap performs wiring
 
-Added the first persistent architecture document at `agent-docs/ai-dlc-architecture.md`.
+Added the first persistent architecture document at `agent-docs/rootstock-architecture.md`.
 
 Added the initial OpenAPI contract at `backend/docs/openapi/openapi.yaml`. It freezes the current sample app API surface for auth, teams, users, discussions, comments, and healthcheck.
 

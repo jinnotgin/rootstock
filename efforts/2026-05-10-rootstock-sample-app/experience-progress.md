@@ -1,4 +1,4 @@
-# Experience progress: AI-DLC sample app
+# Experience progress: Rootstock sample app
 
 ## Current mock/real boundary
 
@@ -100,14 +100,16 @@ Vitest again emitted the sandbox-only websocket listen warning for `0.0.0.0:2467
 Side-track planning update:
 
 - split the reusable `agent-docs/` documentation update out of the generic hardening phase
-- added Phase 9 to `implementation-plan.md` for promoting durable AI-DLC concepts from `exfo-ai-dlc-context-v2.md` into persistent project guidance
+- added Phase 9 to `implementation-plan.md` for promoting durable AI-DLC concepts from `rootstock-context-v2.md` into persistent project guidance
 - clarified that effort docs remain the work log while `agent-docs/` should become the reusable guidance future agents read first
 - sharpened the permanent architecture wording so experience work stops at local adapters, while foundation work may include frontend code such as API adapters, auth/session integration, contract mapping, monitoring, and real service wiring
 
 Continued Phase 7 and Phase 9:
 
-- expanded `agent-docs/ai-dlc-architecture.md` from a glossary into persistent AI-DLC operating guidance
-- added cross-references from frontend API, project-structure, and testing guidance into the AI-DLC architecture document
+- expanded `agent-docs/rootstock-architecture.md` from a glossary into persistent AI-DLC operating guidance
+- added cross-references from frontend API, project-structure, and testing guidance into the Rootstock architecture document
+
+Renamed legacy project-facing identifiers to `rootstock`, including effort/context/architecture filenames, internal documentation links, API title text, and the local browser database key. Explanatory references to the AI development life cycle model remain where they describe the architecture concept.
 - added frontend composition-root coverage proving runtime mode and capability mode are selected independently
 - kept the sharpened boundary explicit: experience work owns the local product experience and local adapters; foundation work may live in frontend or backend once real services, contracts, auth, monitoring, or operational concerns enter
 

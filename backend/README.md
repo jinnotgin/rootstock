@@ -1,4 +1,4 @@
-# AI-DLC sample backend
+# Rootstock sample backend
 
 This backend implements the true-backend mode for the sample app. It follows the clean architecture guidance in `agent-docs/backend-practices.md` and aligns with the frontend AI-DLC ports/adapters model.
 
