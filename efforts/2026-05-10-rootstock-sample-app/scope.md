@@ -2,7 +2,7 @@
 
 ## Summary
 
-Convert the current Bulletproof React sample into a Rootstock sample app with aligned frontend and Go backend architecture:
+Convert the reference Bulletproof React sample into a Rootstock sample app with aligned frontend and Go backend architecture:
 
 - Keep the current sample domain: auth, teams, users, discussions, comments.
 - Add frontend ports/adapters with a composition root so local/mock and true-backend modes use the same UI code.
@@ -57,7 +57,8 @@ GET    /healthcheck
 
 ## Assumptions
 
-- Backend implementation is required because `backend/` is currently empty.
+- The prior sample implementation is retained under `reference/frontend/` and `reference/backend/`.
+- The root `frontend/` and `backend/` folders are intentionally empty starting points for future implementation work.
 - SQLite is the first true backend store, but persistence must remain adapter-swappable.
 - OpenAPI is the contract source of truth.
 - IndexedDB is the preferred local persistence mechanism.

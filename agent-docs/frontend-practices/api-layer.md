@@ -44,7 +44,7 @@ preconfigured API client. Native fetch, [axios](https://github.com/axios/axios),
 clients are fine implementation details as long as they stay behind the adapter
 boundary.
 
-[API Client Example Code](../../frontend/src/lib/api-client.ts)
+[API Client Example Code](../../reference/frontend/src/lib/api-client.ts)
 
 ### Keep Wire Shapes Out Of Feature Code
 
@@ -65,5 +65,5 @@ Feature hooks can then use [react-query](https://tanstack.com/query),
 [swr](https://swr.vercel.app/), or equivalent tooling for cache and mutation
 state without binding the feature to a specific backend.
 
-[API Request Declarations - Query - Example Code](../../frontend/src/features/discussions/api/get-discussions.ts)
-[API Request Declarations - Mutation - Example Code](../../frontend/src/features/discussions/api/create-discussion.ts)
+[API Request Declarations - Query - Example Code](../../reference/frontend/src/features/discussions/api/get-discussions.ts)
+[API Request Declarations - Mutation - Example Code](../../reference/frontend/src/features/discussions/api/create-discussion.ts)

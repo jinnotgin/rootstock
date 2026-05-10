@@ -30,7 +30,7 @@ Opting to store tokens in cookies, configured with the `HttpOnly` attribute, can
 
 In addition to securely storing tokens, it's crucial to protect the entire application from Cross-Site Scripting (XSS) attacks. One key strategy is to sanitize all user inputs before displaying them in the application. By carefully sanitizing inputs, you can reduce the risk of XSS vulnerabilities, making the application more resilient to malicious attacks and enhancing overall security for users.
 
-[HTML Sanitization Example Code](../../frontend/src/components/ui/md-preview/md-preview.tsx)
+[HTML Sanitization Example Code](../../reference/frontend/src/components/ui/md-preview/md-preview.tsx)
 
 For a full list of security risks, check [OWASP](https://owasp.org/www-project-top-10-client-side-security-risks/).
 
@@ -41,7 +41,7 @@ React Query can cache the current-user request, but it should call
 `AuthProvider.getCurrentUser()` through `useServices()` rather than importing a
 concrete auth API module directly.
 
-[Auth Configuration Example Code](../../frontend/src/lib/auth.tsx)
+[Auth Configuration Example Code](../../reference/frontend/src/lib/auth.tsx)
 
 The application may render authenticated UI when a current user is present, but
 the backend remains responsible for enforcing real authorization.
@@ -52,7 +52,7 @@ Authorization is the process of verifying whether a user has permission to acces
 
 #### RBAC (Role based access control)
 
-[Authorization Configuration Example Code](../../frontend/src/lib/authorization.tsx)
+[Authorization Configuration Example Code](../../reference/frontend/src/lib/authorization.tsx)
 
 In a role-based authorization model, access to resources is determined by defining specific roles and associating them with permissions. For example, roles such as USER and ADMIN can be assigned different levels of access rights within the application. Users are then granted access based on their roles; for instance, restricting certain functionalities to regular users while permitting administrators to access all features and functionalities.
 
@@ -60,7 +60,7 @@ Client-side RBAC is a user-experience concern: it controls visible affordances
 and local scenarios. It must not be treated as the real permission check for
 API-backed behavior.
 
-[RBAC Example Code](../../frontend/src/features/discussions/components/delete-discussion.tsx)
+[RBAC Example Code](../../reference/frontend/src/features/discussions/components/delete-discussion.tsx)
 
 #### PBAC (Permission based access control)
 
@@ -72,4 +72,4 @@ For API-backed behavior, PBAC/RBAC decisions must be enforced by foundation
 code. Frontend local adapters should mirror important authorization behavior so
 experience scenarios remain realistic, but they are still mocks.
 
-[PBAC Example Code](../../frontend/src/features/comments/components/comments-list.tsx)
+[PBAC Example Code](../../reference/frontend/src/features/comments/components/comments-list.tsx)

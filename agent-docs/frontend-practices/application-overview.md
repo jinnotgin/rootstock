@@ -34,6 +34,8 @@ The application contains the following models:
 
 ## Get Started
 
-To get started, check the README files for the frontend and backend in this
-repo. For Rootstock architecture details, start with
+To inspect the completed sample implementation, check the README files under
+`reference/frontend/` and `reference/backend/`. The root `frontend/` and
+`backend/` directories are intentionally empty starting points. For Rootstock
+architecture details, start with
 [`../rootstock-architecture/index.md`](../rootstock-architecture/index.md).

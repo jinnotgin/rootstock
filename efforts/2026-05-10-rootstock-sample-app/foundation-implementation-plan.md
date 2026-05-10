@@ -19,7 +19,7 @@
 
 ## Phase 5: Go backend foundation
 
-- Build the Go backend under `backend/` using clean architecture:
+- Build the Go backend under `backend/` using clean architecture. The completed reference implementation now lives under `reference/backend/`:
   - `cmd/app`
   - `config`
   - `internal/app`

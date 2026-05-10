@@ -14,9 +14,9 @@ Decision: local mode defaults to the empty scenario and can opt into seeded scen
 
 Decision: deleting a discussion cascade-deletes its comments. This matches the SQLite foreign key behavior and is now covered by repository tests.
 
-[foundation] Should SQLite run in a repo-local file by default, or use an env-configured path with a default under `backend/data/`?
+[foundation] Should SQLite run in a repo-local file by default, or use an env-configured path with a default under the backend workspace's `data/` directory?
 
-Decision: SQLite uses env-configured `DATABASE_PATH` with default `data/app.db`, which resolves under `backend/data/` when running from the backend workspace.
+Decision: SQLite uses env-configured `DATABASE_PATH` with default `data/app.db`, which resolved under `backend/data/` in the original implementation and now resolves under `reference/backend/data/` when running the reference backend workspace.
 
 [both] Should regular users be able to create comments on any team discussion, matching current behavior, while only admins manage discussions and users?
 

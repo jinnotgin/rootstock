@@ -4,12 +4,12 @@
 
 Currently real:
 
-- React routes and layouts
-- UI components
-- auth, registration, profile, teams, users, discussions, and comments screens
-- form validation
-- React Query loading and mutation flows
-- unit and E2E tests for the sample frontend
+- React routes and layouts in `reference/frontend/`
+- UI components in `reference/frontend/`
+- auth, registration, profile, teams, users, discussions, and comments screens in `reference/frontend/`
+- form validation in `reference/frontend/`
+- React Query loading and mutation flows in `reference/frontend/`
+- unit and E2E tests for the sample frontend in `reference/frontend/`
 
 Currently mocked:
 
@@ -36,9 +36,9 @@ Target mechanism:
 
 Baseline analysis completed.
 
-The frontend is currently a close Bulletproof React sample. The architectural gap is not that the sample lacks mocks; it is that the mocks live at the HTTP interception layer while application code imports concrete API request modules directly. The AI-DLC target requires stable service interfaces and adapter registration outside component/feature logic.
+The frontend started as a close Bulletproof React sample. The architectural gap was not that the sample lacked mocks; it was that the mocks lived at the HTTP interception layer while application code imported concrete API request modules directly. The AI-DLC target requires stable service interfaces and adapter registration outside component/feature logic.
 
-The backend folder exists but has no implementation. A true backend mode therefore requires building the Go backend as part of this effort.
+The backend folder existed with no implementation. A true backend mode therefore required building the Go backend as part of this effort.
 
 Started the frontend service-boundary migration:
 

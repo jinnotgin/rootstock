@@ -12,13 +12,13 @@ empty states, retry affordances, notifications, or redirects. Do not make
 components branch on raw HTTP status codes unless that mapping is intentionally
 part of the adapter contract.
 
-[API Errors Notification Example Code](../../frontend/src/lib/api-client.ts)
+[API Errors Notification Example Code](../../reference/frontend/src/lib/api-client.ts)
 
 ### In App Errors
 
 Utilize error boundaries in React to handle errors within specific parts of your application. Instead of having only one error boundary for the entire app, consider placing multiple error boundaries in different areas. This way, if an error occurs, it can be contained and managed locally without disrupting the entire application's functionality, ensuring a smoother user experience.
 
-[Error Boundary Example Code](../../frontend/src/app/routes/app/discussions/discussion.tsx)
+[Error Boundary Example Code](../../reference/frontend/src/app/routes/app/discussions/discussion.tsx)
 
 ### Error Tracking
 
