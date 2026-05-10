@@ -6,7 +6,7 @@ Code splitting involves splitting production JavaScript into smaller files to op
 
 Ideally, code splitting should be implemented at the routes level, ensuring that only essential code is loaded initially, with additional parts fetched lazily as needed. It's important to avoid excessive code splitting, as this can lead to a performance decline due to the increased number of requests required to fetch all the code chunks. Strategic code splitting, focusing on critical parts of the application, helps balance performance optimization with efficient resource loading.
 
-[Code Splitting Example Code](../../reference/frontend/src/app/router.tsx)
+[Code Splitting Example Code](../../agent-reference/frontend/src/app/router.tsx)
 
 ### Component and state optimizations
 
@@ -92,4 +92,4 @@ Since Google started taking web vitals in account when indexing websites, you sh
 
 It is possible to prefetch data before the user navigates to a page. This can be done by using the `queryClient.prefetchQuery` method from the `@tanstack/react-query` library. This method allows you to prefetch data for a specific query. This can be useful when you know that the user will navigate to a specific page and you want to prefetch the data before the user navigates to the page. This can help to improve the performance of the application by reducing the time it takes to load the data when the user navigates to the page.
 
-[Data Prefetching Example Code](../../reference/frontend/src/features/discussions/components/discussions-list.tsx)
+[Data Prefetching Example Code](../../agent-reference/frontend/src/features/discussions/components/discussions-list.tsx)

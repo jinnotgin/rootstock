@@ -35,7 +35,7 @@ The application contains the following models:
 ## Get Started
 
 To inspect the completed sample implementation, check the README files under
-`reference/frontend/` and `reference/backend/`. The root `frontend/` and
+`agent-reference/frontend/` and `agent-reference/backend/`. The root `frontend/` and
 `backend/` directories are intentionally empty starting points. For Rootstock
 architecture details, start with
 [`../rootstock-architecture/index.md`](../rootstock-architecture/index.md).

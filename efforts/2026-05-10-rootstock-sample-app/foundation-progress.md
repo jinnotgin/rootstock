@@ -4,9 +4,9 @@
 
 Currently real:
 
-- Frontend-only MSW-backed sample behavior in `reference/frontend/`
+- Frontend-only MSW-backed sample behavior in `agent-reference/frontend/`
 - Backend architecture guidance in `agent-docs/backend-practices/index.md`
-- Completed sample backend reference implementation in `reference/backend/`
+- Completed sample backend reference implementation in `agent-reference/backend/`
 
 Currently missing:
 
@@ -39,7 +39,7 @@ The backend should follow the clean architecture guidance already present in the
 
 Added the first persistent architecture document at `agent-docs/rootstock-architecture.md`.
 
-Added the initial OpenAPI contract at `backend/docs/openapi/openapi.yaml`. It froze the current sample app API surface for auth, teams, users, discussions, comments, and healthcheck. The reference copy now lives at `reference/backend/docs/openapi/openapi.yaml`.
+Added the initial OpenAPI contract at `backend/docs/openapi/openapi.yaml`. It froze the current sample app API surface for auth, teams, users, discussions, comments, and healthcheck. The reference copy now lives at `agent-reference/backend/docs/openapi/openapi.yaml`.
 
 Started the Go backend implementation under `backend/`:
 
@@ -160,6 +160,6 @@ Verification after this slice:
 
 Moved the completed sample implementation into the reference area:
 
-- `frontend/` moved to `reference/frontend/`
-- `backend/` moved to `reference/backend/`
+- `frontend/` moved to `agent-reference/frontend/`
+- `backend/` moved to `agent-reference/backend/`
 - recreated empty root `frontend/` and `backend/` directories as new implementation starting points

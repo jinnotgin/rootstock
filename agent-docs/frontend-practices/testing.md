@@ -35,7 +35,7 @@ scenario seed data, authorization-sensitive writes, empty states, expired
 sessions, and permission-denied flows. These are experience-layer tests, but
 they still need realistic domain behavior.
 
-[Unit Test Example Code](../../reference/frontend/src/components/ui/dialog/confirmation-dialog/__tests__/confirmation-dialog.test.tsx)
+[Unit Test Example Code](../../agent-reference/frontend/src/components/ui/dialog/confirmation-dialog/__tests__/confirmation-dialog.test.tsx)
 
 ### API Adapter Tests
 
@@ -50,7 +50,7 @@ work together. Focus these tests on user-visible states and documented
 scenarios: empty, loading, success, validation failure, save failure,
 permission denied, and role-specific behavior.
 
-[Integration Test Example Code](../../reference/frontend/src/app/routes/app/discussions/__tests__/discussion.test.tsx)
+[Integration Test Example Code](../../agent-reference/frontend/src/app/routes/app/discussions/__tests__/discussion.test.tsx)
 
 ### Contract Tests
 
@@ -64,7 +64,7 @@ End-to-end tests run the complete app through critical user paths. Run them
 across meaningful mode combinations where possible: local capability mode for
 experience scenarios and API capability mode for backend integration.
 
-[E2E Example Code](../../reference/frontend/e2e/tests/smoke.spec.ts)
+[E2E Example Code](../../agent-reference/frontend/e2e/tests/smoke.spec.ts)
 
 ## Recommended Tooling:
 
@@ -95,6 +95,6 @@ the same ports as API adapters. MSW handlers can support tests, stories, and
 contract simulation, but do not rely on an MSW handler as the only definition
 of product behavior.
 
-[API Handlers Example Code](../../reference/frontend/src/testing/mocks/handlers/auth.ts)
+[API Handlers Example Code](../../agent-reference/frontend/src/testing/mocks/handlers/auth.ts)
 
-[Data Models Example Code](../../reference/frontend/src/testing/mocks/db.ts)
+[Data Models Example Code](../../agent-reference/frontend/src/testing/mocks/db.ts)

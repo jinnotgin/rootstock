@@ -8,7 +8,7 @@ Decision: implement the backend under `backend/`.
 
 Reasoning: at the start of this effort, the checkout had an empty backend directory. The frontend worked only because MSW emulated backend behavior. A true backend mode required an actual API, persistence, auth, validation, and authorization implementation.
 
-Follow-up: the completed sample backend has been moved to `reference/backend/`. The root `backend/` directory is intentionally empty for future work.
+Follow-up: the completed sample backend has been moved to `agent-reference/backend/`. The root `backend/` directory is intentionally empty for future work.
 
 ### Use SQLite first, keep persistence swappable
 

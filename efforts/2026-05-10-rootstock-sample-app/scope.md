@@ -57,7 +57,7 @@ GET    /healthcheck
 
 ## Assumptions
 
-- The prior sample implementation is retained under `reference/frontend/` and `reference/backend/`.
+- The prior sample implementation is retained under `agent-reference/frontend/` and `agent-reference/backend/`.
 - The root `frontend/` and `backend/` folders are intentionally empty starting points for future implementation work.
 - SQLite is the first true backend store, but persistence must remain adapter-swappable.
 - OpenAPI is the contract source of truth.

@@ -4,12 +4,12 @@
 
 Currently real:
 
-- React routes and layouts in `reference/frontend/`
-- UI components in `reference/frontend/`
-- auth, registration, profile, teams, users, discussions, and comments screens in `reference/frontend/`
-- form validation in `reference/frontend/`
-- React Query loading and mutation flows in `reference/frontend/`
-- unit and E2E tests for the sample frontend in `reference/frontend/`
+- React routes and layouts in `agent-reference/frontend/`
+- UI components in `agent-reference/frontend/`
+- auth, registration, profile, teams, users, discussions, and comments screens in `agent-reference/frontend/`
+- form validation in `agent-reference/frontend/`
+- React Query loading and mutation flows in `agent-reference/frontend/`
+- unit and E2E tests for the sample frontend in `agent-reference/frontend/`
 
 Currently mocked:
 
