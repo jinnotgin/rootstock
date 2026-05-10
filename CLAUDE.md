@@ -1,1 +1,1 @@
-Refer to ./AGENTS.md in full.
+Refer to ./AGENTS.md (@AGENTS.md) for full instructions.
