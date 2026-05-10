@@ -1,17 +1,18 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
-import { api } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
+import { UserStore } from '@/ports';
+import { useServices } from '@/services/app-services-provider';
 import { User } from '@/types/api';
 
-export const getUsers = (): Promise<{ data: User[] }> => {
-  return api.get(`/users`);
+export const getUsers = (users: UserStore): Promise<{ data: User[] }> => {
+  return users.listUsers();
 };
 
-export const getUsersQueryOptions = () => {
+export const getUsersQueryOptions = (users: UserStore) => {
   return queryOptions({
     queryKey: ['users'],
-    queryFn: getUsers,
+    queryFn: () => getUsers(users),
   });
 };
 
@@ -20,8 +21,10 @@ type UseUsersOptions = {
 };
 
 export const useUsers = ({ queryConfig }: UseUsersOptions = {}) => {
+  const { users } = useServices();
+
   return useQuery({
-    ...getUsersQueryOptions(),
+    ...getUsersQueryOptions(users),
     ...queryConfig,
   });
 };

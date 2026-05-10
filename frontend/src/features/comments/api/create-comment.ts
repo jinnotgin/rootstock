@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
-import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
+import { useServices } from '@/services/app-services-provider';
+import { defaultServices } from '@/services/bootstrap/services';
 import { Comment } from '@/types/api';
 
 import { getInfiniteCommentsQueryOptions } from './get-comments';
@@ -19,7 +20,7 @@ export const createComment = ({
 }: {
   data: CreateCommentInput;
 }): Promise<Comment> => {
-  return api.post('/comments', data);
+  return defaultServices.comments.createComment(data);
 };
 
 type UseCreateCommentOptions = {
@@ -31,6 +32,7 @@ export const useCreateComment = ({
   mutationConfig,
   discussionId,
 }: UseCreateCommentOptions) => {
+  const { comments } = useServices();
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
@@ -38,11 +40,12 @@ export const useCreateComment = ({
   return useMutation({
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: getInfiniteCommentsQueryOptions(discussionId).queryKey,
+        queryKey: getInfiniteCommentsQueryOptions(comments, discussionId)
+          .queryKey,
       });
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: createComment,
+    mutationFn: ({ data }) => comments.createComment(data),
   });
 };

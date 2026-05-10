@@ -1,0 +1,515 @@
+openapi: 3.0.3
+info:
+  title: AI-DLC Sample App API
+  version: 0.1.0
+  description: Contract for the auth, teams, users, discussions, and comments sample app.
+servers:
+  - url: http://localhost:8080/api
+security:
+  - sessionCookie: []
+paths:
+  /healthcheck:
+    get:
+      security: []
+      operationId: healthcheck
+      responses:
+        "200":
+          description: Service health
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok]
+                properties:
+                  ok:
+                    type: boolean
+  /auth/register:
+    post:
+      security: []
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "200":
+          description: Registered user and session token
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+  /auth/login:
+    post:
+      security: []
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Logged in user and session token
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          $ref: "#/components/responses/Error"
+  /auth/logout:
+    post:
+      operationId: logout
+      responses:
+        "200":
+          description: Session cleared
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "401":
+          $ref: "#/components/responses/Error"
+  /auth/me:
+    get:
+      operationId: getCurrentUser
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Error"
+  /teams:
+    get:
+      security: []
+      operationId: listTeams
+      responses:
+        "200":
+          description: Teams
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Team"
+  /users:
+    get:
+      operationId: listUsers
+      responses:
+        "200":
+          description: Users in the current team
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Error"
+  /users/profile:
+    patch:
+      operationId: updateProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileInput"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Error"
+  /users/{userId}:
+    delete:
+      operationId: deleteUser
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          description: Deleted user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Error"
+  /discussions:
+    get:
+      operationId: listDiscussions
+      parameters:
+        - $ref: "#/components/parameters/Page"
+      responses:
+        "200":
+          description: Paginated discussions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiscussionPage"
+    post:
+      operationId: createDiscussion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscussionInput"
+      responses:
+        "200":
+          description: Created discussion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Discussion"
+        "401":
+          $ref: "#/components/responses/Error"
+  /discussions/{discussionId}:
+    get:
+      operationId: getDiscussion
+      parameters:
+        - $ref: "#/components/parameters/DiscussionId"
+      responses:
+        "200":
+          description: Discussion
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Discussion"
+        "404":
+          $ref: "#/components/responses/Error"
+    patch:
+      operationId: updateDiscussion
+      parameters:
+        - $ref: "#/components/parameters/DiscussionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscussionInput"
+      responses:
+        "200":
+          description: Updated discussion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Discussion"
+        "401":
+          $ref: "#/components/responses/Error"
+    delete:
+      operationId: deleteDiscussion
+      parameters:
+        - $ref: "#/components/parameters/DiscussionId"
+      responses:
+        "200":
+          description: Deleted discussion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Discussion"
+        "401":
+          $ref: "#/components/responses/Error"
+  /comments:
+    get:
+      operationId: listComments
+      parameters:
+        - $ref: "#/components/parameters/DiscussionIdQuery"
+        - $ref: "#/components/parameters/Page"
+      responses:
+        "200":
+          description: Paginated comments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentPage"
+    post:
+      operationId: createComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCommentInput"
+      responses:
+        "200":
+          description: Created comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "#/components/responses/Error"
+  /comments/{commentId}:
+    delete:
+      operationId: deleteComment
+      parameters:
+        - $ref: "#/components/parameters/CommentId"
+      responses:
+        "200":
+          description: Deleted comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "#/components/responses/Error"
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: bulletproof_react_app_token
+  parameters:
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+    DiscussionId:
+      name: discussionId
+      in: path
+      required: true
+      schema:
+        type: string
+    DiscussionIdQuery:
+      name: discussionId
+      in: query
+      required: true
+      schema:
+        type: string
+    CommentId:
+      name: commentId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    Error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+    Meta:
+      type: object
+      required: [page, total, totalPages]
+      properties:
+        page:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+    User:
+      type: object
+      required: [id, createdAt, firstName, lastName, email, role, teamId, bio]
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [ADMIN, USER]
+        teamId:
+          type: string
+        bio:
+          type: string
+    Team:
+      type: object
+      required: [id, createdAt, name, description]
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+    Discussion:
+      type: object
+      required: [id, createdAt, title, body, teamId, author]
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        title:
+          type: string
+        body:
+          type: string
+        teamId:
+          type: string
+        author:
+          $ref: "#/components/schemas/User"
+    Comment:
+      type: object
+      required: [id, createdAt, body, discussionId, author]
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        body:
+          type: string
+        discussionId:
+          type: string
+        author:
+          $ref: "#/components/schemas/User"
+    AuthResponse:
+      type: object
+      required: [jwt, user]
+      properties:
+        jwt:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 5
+    RegisterInput:
+      type: object
+      required: [email, firstName, lastName, password]
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+          minLength: 5
+        teamId:
+          type: string
+          nullable: true
+        teamName:
+          type: string
+          nullable: true
+    UpdateProfileInput:
+      type: object
+      required: [email, firstName, lastName, bio]
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        bio:
+          type: string
+    DiscussionInput:
+      type: object
+      required: [title, body]
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+    CreateCommentInput:
+      type: object
+      required: [discussionId, body]
+      properties:
+        discussionId:
+          type: string
+        body:
+          type: string
+    DiscussionPage:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Discussion"
+        meta:
+          $ref: "#/components/schemas/Meta"
+    CommentPage:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment"
+        meta:
+          $ref: "#/components/schemas/Meta"

@@ -1,21 +1,27 @@
 import { useQuery, queryOptions } from '@tanstack/react-query';
 
-import { api } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
+import { DiscussionStore } from '@/ports';
+import { useServices } from '@/services/app-services-provider';
 import { Discussion } from '@/types/api';
 
 export const getDiscussion = ({
+  discussions,
   discussionId,
 }: {
+  discussions: DiscussionStore;
   discussionId: string;
 }): Promise<{ data: Discussion }> => {
-  return api.get(`/discussions/${discussionId}`);
+  return discussions.getDiscussion(discussionId);
 };
 
-export const getDiscussionQueryOptions = (discussionId: string) => {
+export const getDiscussionQueryOptions = (
+  discussions: DiscussionStore,
+  discussionId: string,
+) => {
   return queryOptions({
     queryKey: ['discussions', discussionId],
-    queryFn: () => getDiscussion({ discussionId }),
+    queryFn: () => getDiscussion({ discussions, discussionId }),
   });
 };
 
@@ -28,8 +34,10 @@ export const useDiscussion = ({
   discussionId,
   queryConfig,
 }: UseDiscussionOptions) => {
+  const { discussions } = useServices();
+
   return useQuery({
-    ...getDiscussionQueryOptions(discussionId),
+    ...getDiscussionQueryOptions(discussions, discussionId),
     ...queryConfig,
   });
 };

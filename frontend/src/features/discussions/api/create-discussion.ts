@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
-import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
+import { useServices } from '@/services/app-services-provider';
+import { defaultServices } from '@/services/bootstrap/services';
 import { Discussion } from '@/types/api';
 
 import { getDiscussionsQueryOptions } from './get-discussions';
@@ -19,7 +20,7 @@ export const createDiscussion = ({
 }: {
   data: CreateDiscussionInput;
 }): Promise<Discussion> => {
-  return api.post(`/discussions`, data);
+  return defaultServices.discussions.createDiscussion(data);
 };
 
 type UseCreateDiscussionOptions = {
@@ -29,6 +30,7 @@ type UseCreateDiscussionOptions = {
 export const useCreateDiscussion = ({
   mutationConfig,
 }: UseCreateDiscussionOptions = {}) => {
+  const { discussions } = useServices();
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
@@ -36,11 +38,11 @@ export const useCreateDiscussion = ({
   return useMutation({
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: getDiscussionsQueryOptions().queryKey,
+        queryKey: getDiscussionsQueryOptions({ discussions }).queryKey,
       });
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: createDiscussion,
+    mutationFn: ({ data }) => discussions.createDiscussion(data),
   });
 };

@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
+import { useServices } from '@/services/app-services-provider';
+import { defaultServices } from '@/services/bootstrap/services';
 
 import { getDiscussionsQueryOptions } from './get-discussions';
 
@@ -10,7 +11,7 @@ export const deleteDiscussion = ({
 }: {
   discussionId: string;
 }) => {
-  return api.delete(`/discussions/${discussionId}`);
+  return defaultServices.discussions.deleteDiscussion(discussionId);
 };
 
 type UseDeleteDiscussionOptions = {
@@ -20,6 +21,7 @@ type UseDeleteDiscussionOptions = {
 export const useDeleteDiscussion = ({
   mutationConfig,
 }: UseDeleteDiscussionOptions = {}) => {
+  const { discussions } = useServices();
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
@@ -27,11 +29,12 @@ export const useDeleteDiscussion = ({
   return useMutation({
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: getDiscussionsQueryOptions().queryKey,
+        queryKey: getDiscussionsQueryOptions({ discussions }).queryKey,
       });
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: deleteDiscussion,
+    mutationFn: ({ discussionId }) =>
+      discussions.deleteDiscussion(discussionId),
   });
 };

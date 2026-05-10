@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
 
-import { api } from '@/lib/api-client';
 import { useUser } from '@/lib/auth';
 import { MutationConfig } from '@/lib/react-query';
+import { useServices } from '@/services/app-services-provider';
+import { defaultServices } from '@/services/bootstrap/services';
 
 export const updateProfileInputSchema = z.object({
   email: z.string().min(1, 'Required').email('Invalid email'),
@@ -15,7 +16,7 @@ export const updateProfileInputSchema = z.object({
 export type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>;
 
 export const updateProfile = ({ data }: { data: UpdateProfileInput }) => {
-  return api.patch(`/users/profile`, data);
+  return defaultServices.users.updateProfile(data);
 };
 
 type UseUpdateProfileOptions = {
@@ -25,6 +26,7 @@ type UseUpdateProfileOptions = {
 export const useUpdateProfile = ({
   mutationConfig,
 }: UseUpdateProfileOptions = {}) => {
+  const { users } = useServices();
   const { refetch: refetchUser } = useUser();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
@@ -35,6 +37,6 @@ export const useUpdateProfile = ({
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: updateProfile,
+    mutationFn: ({ data }) => users.updateProfile(data),
   });
 };

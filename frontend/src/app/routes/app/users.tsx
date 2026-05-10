@@ -4,9 +4,10 @@ import { ContentLayout } from '@/components/layouts';
 import { getUsersQueryOptions } from '@/features/users/api/get-users';
 import { UsersList } from '@/features/users/components/users-list';
 import { Authorization, ROLES } from '@/lib/authorization';
+import { defaultServices } from '@/services/bootstrap/services';
 
 export const clientLoader = (queryClient: QueryClient) => async () => {
-  const query = getUsersQueryOptions();
+  const query = getUsersQueryOptions(defaultServices.users);
 
   return (
     queryClient.getQueryData(query.queryKey) ??

@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
-import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
+import { useServices } from '@/services/app-services-provider';
+import { defaultServices } from '@/services/bootstrap/services';
 import { Discussion } from '@/types/api';
 
 import { getDiscussionQueryOptions } from './get-discussion';
@@ -21,7 +22,7 @@ export const updateDiscussion = ({
   data: UpdateDiscussionInput;
   discussionId: string;
 }): Promise<Discussion> => {
-  return api.patch(`/discussions/${discussionId}`, data);
+  return defaultServices.discussions.updateDiscussion(discussionId, data);
 };
 
 type UseUpdateDiscussionOptions = {
@@ -31,6 +32,7 @@ type UseUpdateDiscussionOptions = {
 export const useUpdateDiscussion = ({
   mutationConfig,
 }: UseUpdateDiscussionOptions = {}) => {
+  const { discussions } = useServices();
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
@@ -38,11 +40,12 @@ export const useUpdateDiscussion = ({
   return useMutation({
     onSuccess: (data, ...args) => {
       queryClient.refetchQueries({
-        queryKey: getDiscussionQueryOptions(data.id).queryKey,
+        queryKey: getDiscussionQueryOptions(discussions, data.id).queryKey,
       });
       onSuccess?.(data, ...args);
     },
     ...restConfig,
-    mutationFn: updateDiscussion,
+    mutationFn: ({ data, discussionId }) =>
+      discussions.updateDiscussion(discussionId, data),
   });
 };

@@ -6,6 +6,7 @@ import { getInfiniteCommentsQueryOptions } from '@/features/comments/api/get-com
 import { getDiscussionsQueryOptions } from '@/features/discussions/api/get-discussions';
 import { CreateDiscussion } from '@/features/discussions/components/create-discussion';
 import { DiscussionsList } from '@/features/discussions/components/discussions-list';
+import { defaultServices } from '@/services/bootstrap/services';
 
 export const clientLoader =
   (queryClient: QueryClient) =>
@@ -14,7 +15,10 @@ export const clientLoader =
 
     const page = Number(url.searchParams.get('page') || 1);
 
-    const query = getDiscussionsQueryOptions({ page });
+    const query = getDiscussionsQueryOptions({
+      discussions: defaultServices.discussions,
+      page,
+    });
 
     return (
       queryClient.getQueryData(query.queryKey) ??
@@ -34,7 +38,7 @@ const DiscussionsRoute = () => {
           onDiscussionPrefetch={(id) => {
             // Prefetch the comments data when the user hovers over the link in the list
             queryClient.prefetchInfiniteQuery(
-              getInfiniteCommentsQueryOptions(id),
+              getInfiniteCommentsQueryOptions(defaultServices.comments, id),
             );
           }}
         />

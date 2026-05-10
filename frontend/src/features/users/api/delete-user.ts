@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
+import { useServices } from '@/services/app-services-provider';
+import { defaultServices } from '@/services/bootstrap/services';
 
 import { getUsersQueryOptions } from './get-users';
 
@@ -10,7 +11,7 @@ export type DeleteUserDTO = {
 };
 
 export const deleteUser = ({ userId }: DeleteUserDTO) => {
-  return api.delete(`/users/${userId}`);
+  return defaultServices.users.deleteUser(userId);
 };
 
 type UseDeleteUserOptions = {
@@ -20,6 +21,7 @@ type UseDeleteUserOptions = {
 export const useDeleteUser = ({
   mutationConfig,
 }: UseDeleteUserOptions = {}) => {
+  const { users } = useServices();
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
@@ -27,11 +29,11 @@ export const useDeleteUser = ({
   return useMutation({
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: getUsersQueryOptions().queryKey,
+        queryKey: getUsersQueryOptions(users).queryKey,
       });
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: deleteUser,
+    mutationFn: ({ userId }) => users.deleteUser(userId),
   });
 };

@@ -11,14 +11,21 @@ import {
   getDiscussionQueryOptions,
 } from '@/features/discussions/api/get-discussion';
 import { DiscussionView } from '@/features/discussions/components/discussion-view';
+import { defaultServices } from '@/services/bootstrap/services';
 
 export const clientLoader =
   (queryClient: QueryClient) =>
   async ({ params }: LoaderFunctionArgs) => {
     const discussionId = params.discussionId as string;
 
-    const discussionQuery = getDiscussionQueryOptions(discussionId);
-    const commentsQuery = getInfiniteCommentsQueryOptions(discussionId);
+    const discussionQuery = getDiscussionQueryOptions(
+      defaultServices.discussions,
+      discussionId,
+    );
+    const commentsQuery = getInfiniteCommentsQueryOptions(
+      defaultServices.comments,
+      discussionId,
+    );
 
     const promises = [
       queryClient.getQueryData(discussionQuery.queryKey) ??

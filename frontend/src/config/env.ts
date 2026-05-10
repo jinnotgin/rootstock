@@ -2,7 +2,13 @@ import * as z from 'zod';
 
 const createEnv = () => {
   const EnvSchema = z.object({
-    API_URL: z.string(),
+    API_URL: z.string().optional().default('http://localhost:8080/api'),
+    RUNTIME_MODE: z
+      .enum(['local', 'dev', 'staging', 'production'])
+      .optional()
+      .default('local'),
+    DATA_CAPABILITY: z.enum(['local', 'api']).optional(),
+    AUTH_CAPABILITY: z.enum(['local', 'api']).optional(),
     ENABLE_API_MOCKING: z
       .string()
       .refine((s) => s === 'true' || s === 'false')

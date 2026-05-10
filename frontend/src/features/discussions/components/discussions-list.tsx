@@ -5,6 +5,7 @@ import { Link } from '@/components/ui/link';
 import { Spinner } from '@/components/ui/spinner';
 import { Table } from '@/components/ui/table';
 import { paths } from '@/config/paths';
+import { defaultServices } from '@/services/bootstrap/services';
 import { formatDate } from '@/utils/format';
 
 import { getDiscussionQueryOptions } from '../api/get-discussion';
@@ -62,7 +63,9 @@ export const DiscussionsList = ({
               <Link
                 onMouseEnter={() => {
                   // Prefetch the discussion data when the user hovers over the link
-                  queryClient.prefetchQuery(getDiscussionQueryOptions(id));
+                  queryClient.prefetchQuery(
+                    getDiscussionQueryOptions(defaultServices.discussions, id),
+                  );
                   onDiscussionPrefetch?.(id);
                 }}
                 to={paths.app.discussion.getHref(id)}
