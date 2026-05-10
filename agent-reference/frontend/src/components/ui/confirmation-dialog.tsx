@@ -64,18 +64,13 @@ export const ConfirmationDialog = ({
 					</DialogTitle>
 				</DialogHeader>
 
-				<div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-					{body && (
-						<div className="mt-2">
-							<p>{body}</p>
-						</div>
-					)}
+				<div className="text-center sm:text-left">
+					{body && <p>{body}</p>}
 				</div>
 
 				<DialogFooter>
 					{confirmButton}
 					<Button
-						ref={React.useRef(null)}
 						variant="outline"
 						onClick={close}
 					>

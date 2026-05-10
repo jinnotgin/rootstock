@@ -32,7 +32,7 @@ export const DiscussionView = ({ discussionId }: { discussionId: string }) => {
 					by {discussion.author.firstName} {discussion.author.lastName}
 				</span>
 			)}
-			<div className="mt-6 flex flex-col space-y-16">
+			<div className="mt-6 flex flex-col space-y-6">
 				<div className="flex justify-end">
 					<UpdateDiscussion discussionId={discussionId} />
 				</div>

@@ -186,13 +186,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 						<DropdownMenuContent align="end">
 							<DropdownMenuItem
 								onClick={() => navigate(paths.app.profile.getHref())}
-								className={cn('block px-4 py-2 text-sm text-gray-700')}
+								className="cursor-pointer"
 							>
 								Your Profile
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
-								className={cn('block px-4 py-2 text-sm text-gray-700 w-full')}
+								className="cursor-pointer"
 								onClick={() => logout.mutate({})}
 							>
 								Sign Out

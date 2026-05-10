@@ -56,9 +56,9 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
 	const { label, error, children } = props;
 	return (
 		<div>
-			<Label>
+			<Label className="grid gap-1">
 				{label}
-				<div className="mt-1">{children}</div>
+				{children}
 			</Label>
 			<Error errorMessage={error?.message} />
 		</div>
