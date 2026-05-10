@@ -21,4 +21,4 @@ Use the durable docs for details:
 - Rootstock architecture: `agent-docs/rootstock-architecture/index.md`
 - Frontend guidance: `agent-docs/frontend-practices/`
 - Backend guidance: `agent-docs/backend-practices/index.md`
-- Effort docs: `efforts/YYMMDD-<effort-slug>/`
+- Effort docs: `efforts/YYYY-MM-DD-<effort-slug>/`
