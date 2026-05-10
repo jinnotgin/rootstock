@@ -1,33 +1,70 @@
 # 🧪 Testing
 
-For AI-DLC boundaries, test the behavior at the layer that owns it: ports and
+For Rootstock boundaries, test the behavior at the layer that owns it: ports and
 providers for frontend service contracts, local adapters for browser-only mode,
 API adapters for HTTP wire-shape mapping, and E2E flows for user-visible
 integration. MSW remains useful for request interception and executable
 scenarios, but it should not be the only definition of product behavior. See
-[`../rootstock-architecture.md`](../rootstock-architecture.md).
+[`../rootstock-architecture/index.md`](../rootstock-architecture/index.md).
 
-As highlighted in this [tweet](https://twitter.com/rauchg/status/807626710350839808), the efficacy of testing lies in the comprehensive coverage provided by integration and end-to-end (e2e) tests. While unit tests serve a purpose in isolating and validating individual components, the true value and confidence in application functionality stem from robust integration and e2e testing strategies.
+Use TDD for frontend behavior changes:
+
+```txt
+Red      -> write or update a failing test for the visible behavior, port contract, or adapter behavior
+Green    -> make the smallest change that passes that test
+Refactor -> clean up while keeping the same tests green
+```
+
+The point of frontend tests in Rootstock is not only quality. Tests prevent the
+local product experience and the real foundation implementation from silently
+diverging.
 
 ## Types of tests:
 
-### Unit Tests
+### Port And Provider Tests
 
-Unit tests are the smallest tests you can write. They test individual parts of your application in isolation. They are useful for testing shared components and functions that are used throughout the entire application. They are also useful for testing complex logic in a single component. They are fast to run and easy to write.
+Port/provider tests prove that `makeServices(config)` selects the expected
+adapter registrations for runtime and capability modes. They also prove feature
+hooks can consume services without knowing whether the backing implementation
+is local or API-backed.
 
-[Unit Test Example Code](../apps/react-vite/src/components/ui/dialog/confirmation-dialog/__tests__/confirmation-dialog.test.tsx)
+### Local Adapter Tests
+
+Local adapter tests verify browser-only product behavior: local persistence,
+scenario seed data, authorization-sensitive writes, empty states, expired
+sessions, and permission-denied flows. These are experience-layer tests, but
+they still need realistic domain behavior.
+
+[Unit Test Example Code](../../frontend/src/components/ui/dialog/confirmation-dialog/__tests__/confirmation-dialog.test.tsx)
+
+### API Adapter Tests
+
+API adapter tests verify HTTP wire-shape mapping, response normalization,
+session behavior, and backend error handling. They should prove that API-backed
+adapters satisfy the same port contracts as local adapters.
 
 ### Integration Tests
 
-Integration testing checks how different parts of your application work together. It's crucial to focus on integration tests for most of your testing, as they provide significant benefits and boost confidence in your application's reliability. While unit tests are helpful for individual parts, passing them doesn't guarantee your app will function correctly if the connections between parts are flawed. Testing various features with integration tests is vital to ensure that your application works smoothly and consistently.
+Integration testing checks how screens, feature hooks, providers, and adapters
+work together. Focus these tests on user-visible states and documented
+scenarios: empty, loading, success, validation failure, save failure,
+permission denied, and role-specific behavior.
 
-[Integration Test Example Code](../apps/react-vite/src/app/routes/app/discussions/__tests__/discussion.test.tsx)
+[Integration Test Example Code](../../frontend/src/app/routes/app/discussions/__tests__/discussion.test.tsx)
+
+### Contract Tests
+
+Contract tests verify that real adapters conform to frontend ports and that API
+responses match the OpenAPI contract. These tests are the main guard against
+mock drift.
 
 ### E2E
 
-End-to-End Testing is a method that evaluates an application as a whole. These tests involve automating the complete application, including both the frontend and backend, to confirm that the entire system functions correctly. End-to-End tests simulate how a user would interact with the application.
+End-to-end tests run the complete app through critical user paths. Run them
+across meaningful mode combinations where possible: local capability mode for
+experience scenarios and API capability mode for backend integration.
 
-[E2E Example Code](../apps/react-vite/e2e/tests/smoke.spec.ts)
+[E2E Example Code](../../frontend/e2e/tests/smoke.spec.ts)
 
 ## Recommended Tooling:
 
@@ -49,12 +86,15 @@ You define all the commands a real world user would execute when using the app a
 
 #### [MSW](https://mswjs.io)
 
-For prototyping the API use msw, which is a great tool for quickly creating frontends without worrying about servers. It is not an actual backend, but a mocked server inside a service worker that intercepts all HTTP requests and returns desired responses based on the handlers you define. This is especially useful if you only have access to the frontend and are blocked by some not implemented features on the backend. This way, you will not be forced to wait for the feature to be completed or hardcode response data in the code, but use actual HTTP calls to build frontend features.
+MSW is useful for request interception, executable scenario fixtures, API
+contract simulation, and tests that need network-shaped behavior. It is not the
+primary Rootstock architecture boundary.
 
-It can be used for designing API endpoints. The business logic of the mocked API can be created in its handlers.
+Product behavior in local mode should live behind local adapters that satisfy
+the same ports as API adapters. MSW handlers can support tests, stories, and
+contract simulation, but do not rely on an MSW handler as the only definition
+of product behavior.
 
-[API Handlers Example Code](../apps/react-vite/src/testing/mocks/handlers/auth.ts)
+[API Handlers Example Code](../../frontend/src/testing/mocks/handlers/auth.ts)
 
-[Data Models Example Code](../apps/react-vite/src/testing/mocks/db.ts)
-
-Having a fully functional mocked API server is also handy when it comes to testing, you don't have to mock fetch, but make requests to the mocked server instead with the data your application would expect.
+[Data Models Example Code](../../frontend/src/testing/mocks/db.ts)

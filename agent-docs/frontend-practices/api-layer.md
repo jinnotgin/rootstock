@@ -1,29 +1,69 @@
 # 📡 API Layer
 
-For AI-DLC work, feature code should consume domain ports through the service
-provider instead of importing concrete HTTP calls directly. Keep Axios/fetch,
-generated OpenAPI clients, and wire-shape mapping inside API adapters. See
-[`../rootstock-architecture.md`](../rootstock-architecture.md) for the ports,
-adapters, composition-root, and OpenAPI contract model.
+For Rootstock work, feature code consumes domain ports through the service
+provider. It does not import concrete HTTP calls directly. Keep Axios/fetch,
+generated OpenAPI clients, cookie/session behavior, backend error mapping, and
+wire-shape mapping inside API adapters. See
+[`../rootstock-architecture/index.md`](../rootstock-architecture/index.md) for
+the ports, adapters, composition-root, and OpenAPI contract model.
 
-### Use a Single Instance of the API Client
+The current sample follows this shape:
 
-When your application interacts with either RESTful or GraphQL APIs, it is beneficial to use a single instance of the API client that has been pre-configured and can be reused throughout the application. For example, you can create a single API client instance using the native fetch API or libraries such as [axios](https://github.com/axios/axios), [graphql-request](https://github.com/prisma-labs/graphql-request), or [apollo-client](https://www.apollographql.com/docs/react/) with predefined configuration settings.
+```txt
+feature hook
+  -> useServices()
+  -> port interface
+  -> local adapter or API adapter selected by makeServices(config)
+  -> API client / OpenAPI wire shape only inside the API adapter
+```
 
-[API Client Example Code](../apps/react-vite/src/lib/api-client.ts)
+### Use Ports As The Feature Boundary
 
-### Define and Export Request Declarations
+Feature API files may still export query options, mutation hooks, schemas, and
+React Query integration, but their fetcher functions should accept a port such
+as `DiscussionStore`, `CommentStore`, or `AuthProvider`. They should not call
+the shared HTTP client directly.
 
-Rather than declaring API requests on the fly, it is recommended to define and export them separately.
+Example shape:
 
-Declaring API requests in a structured manner can help maintain a clean and organized codebase as everything is colocated.
-Every API request declaration should consist of:
+```ts
+export const getDiscussions = (
+  discussions: DiscussionStore,
+  page = 1,
+) => discussions.listDiscussions(page);
+```
 
-- Types and validation schemas for the request and response data
-- A fetcher function that calls an endpoint, using the API client instance
-- A hook that consumes the fetcher function that is built on top of libraries such as [react-query](https://tanstack.com/query), [swr](https://swr.vercel.app/), [apollo-client](https://www.apollographql.com/docs/react/), [urql](https://formidable.com/open-source/urql/), etc. to manage the data fetching and caching logic.
+This keeps the product experience stable while runtime and capability modes
+switch between local and API-backed implementations.
 
-This approach simplifies the tracking of defined endpoints available in the application. Additionally, typing the responses and inferring them further down the application enhances application type safety.
+### Use A Single API Client Inside API Adapters
 
-[API Request Declarations - Query - Example Code](../apps/react-vite/src/features/discussions/api/get-discussions.ts)
-[API Request Declarations - Mutation - Example Code](../apps/react-vite/src/features/discussions/api/create-discussion.ts)
+When the API adapter interacts with REST or GraphQL APIs, use a single
+preconfigured API client. Native fetch, [axios](https://github.com/axios/axios),
+[graphql-request](https://github.com/prisma-labs/graphql-request), and similar
+clients are fine implementation details as long as they stay behind the adapter
+boundary.
+
+[API Client Example Code](../../frontend/src/lib/api-client.ts)
+
+### Keep Wire Shapes Out Of Feature Code
+
+OpenAPI request and response shapes belong at the API adapter boundary. The
+adapter maps those shapes to frontend domain types and port return values. A
+backend handler might return `{ data: user }`, while the auth port returns
+`User | null`.
+
+Every API-backed adapter operation should make these responsibilities explicit:
+
+- call the shared API client or generated OpenAPI client
+- translate request and response wire shapes
+- normalize backend errors for feature code
+- preserve auth/session behavior
+- satisfy the same port contract as the local adapter
+
+Feature hooks can then use [react-query](https://tanstack.com/query),
+[swr](https://swr.vercel.app/), or equivalent tooling for cache and mutation
+state without binding the feature to a specific backend.
+
+[API Request Declarations - Query - Example Code](../../frontend/src/features/discussions/api/get-discussions.ts)
+[API Request Declarations - Mutation - Example Code](../../frontend/src/features/discussions/api/create-discussion.ts)

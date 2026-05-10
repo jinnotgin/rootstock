@@ -114,6 +114,14 @@ Verification after this slice:
 - `npm run build` passed
 - `GOCACHE=/tmp/go-build go test ./...` passed
 
+Documentation maintenance:
+
+- split `agent-docs/backend-practices.md` into small topic files under
+  `agent-docs/backend-practices/` while preserving the original section text
+- split `agent-docs/rootstock-architecture.md` into small topic files under
+  `agent-docs/rootstock-architecture/` while preserving the original section
+  text
+
 Continued Phase 6/8 hardening:
 
 - extended REST handler coverage so regular users create comments on team discussions while admins manage discussions

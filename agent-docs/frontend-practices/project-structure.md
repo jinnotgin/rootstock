@@ -1,12 +1,12 @@
 # 🗄️ Project Structure
 
-AI-DLC apps add a service boundary to the usual feature-based structure:
+Rootstock apps add a service boundary to the usual feature-based structure:
 `domain/` for product types, `ports/` for stable interfaces, `adapters/` for
 local/API/vendor implementations, and `services/` for composition-root wiring.
 Features should depend on ports through `useServices()`, not on concrete
-adapters. See [`../rootstock-architecture.md`](../rootstock-architecture.md).
+adapters. See [`../rootstock-architecture/index.md`](../rootstock-architecture/index.md).
 
-Most of the code lives in the `src` folder and looks something like this:
+The current sample uses this shape:
 
 ```sh
 src
@@ -17,6 +17,16 @@ src
 |   +-- app.tsx       # main application component
 |   +-- provider.tsx  # application provider that wraps the entire application with different global providers - this might also differ based on meta framework used
 |   +-- router.tsx    # application router configuration
++-- domain            # shared product/domain types used by ports and adapters
+|
++-- ports             # stable interfaces consumed by feature/application code
+|
++-- adapters          # concrete local, HTTP, and vendor-backed implementations
+|   +-- local         # browser-only product behavior and scenario fixtures
+|   +-- http          # API-backed implementations and wire-shape mapping
+|
++-- services          # AppServices provider, useServices hook, composition root, mode selection
+|
 +-- assets            # assets folder can contain all the static files such as images, fonts, etc.
 |
 +-- components        # shared components used across the entire application
@@ -38,6 +48,12 @@ src
 +-- utils             # shared utility functions
 ```
 
+The governing rule is that feature modules can depend on `ports` and
+`services`, but not on concrete adapters. Components and hooks should not
+branch on IndexedDB, localStorage, MSW, Axios, generated clients, or vendor SDKs.
+Those decisions belong in `services/bootstrap/mode.ts` and
+`services/bootstrap/services.ts`.
+
 For easy scalability and maintenance, organize most of the code within the features folder. Each feature folder should contain code specific to that feature, keeping things neatly separated. This approach helps prevent mixing feature-related code with shared components, making it simpler to manage and maintain the codebase compared to having many files in a flat folder structure. By adopting this method, you can enhance collaboration, readability, and scalability in the application's architecture.
 
 A feature could have the following structure:
@@ -45,7 +61,7 @@ A feature could have the following structure:
 ```sh
 src/features/awesome-feature
 |
-+-- api         # exported API request declarations and api hooks related to a specific feature
++-- api         # query/mutation hooks that call service ports, not concrete HTTP clients
 |
 +-- assets      # assets folder can contain all the static files for a specific feature
 |
@@ -62,11 +78,17 @@ src/features/awesome-feature
 
 NOTE: You don't need all of these folders for every feature. Only include the ones that are necessary for the feature.
 
-In some cases it might be more practical to keep all API calls outside of the features folders in a dedicated `api` folder where all API calls are defined. This can be useful if you have a lot of shared API calls between features.
+In Rootstock, feature `api` folders are not the backend boundary. They are the
+feature's data hooks and cache integration. The backend boundary lives in
+`ports/`, `adapters/`, and `services/`.
 
 In the past, it was recommended to use barrel files to export all the files from a feature. However, it can cause issues for Vite to do tree shaking and can lead to performance issues. Therefore, it is recommended to import the files directly.
 
 It might not be a good idea to import across the features. Instead, compose different features at the application level. This way, you can ensure that each feature is independent which makes the codebase less convoluted.
+
+When one feature needs behavior owned by another area, prefer lifting the
+composition to a route/app layer or adding a shared domain port. Do not make
+feature code reach into another feature's adapter or concrete request module.
 
 To forbid cross-feature imports, you can use ESLint:
 

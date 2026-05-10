@@ -1,10 +1,15 @@
 # 💻 Application Overview
 
-The application is relatively simple. Users can create teams where other users can join, and they start discussions on different topics between each other.
+The current sample is a Rootstock version of a simple team discussion app.
+Users can create teams where other users can join, and they start discussions
+on different topics between each other.
 
 A team is created during the registration if the user didn't choose to join an existing team and the user becomes the admin of it.
 
-[Demo](https://bulletproof-react-app.netlify.app)
+The app is intentionally structured so the same user experience can run in
+local mode or API-backed modes. Runtime and capability modes select local or
+API adapters behind stable frontend ports; screens and feature hooks should not
+know which implementation is active.
 
 ## Data model
 
@@ -29,8 +34,6 @@ The application contains the following models:
 
 ## Get Started
 
-To get started, check the README.md file in the application you want to run.
-
-- [React Vite](../apps/react-vite/README.md)
-- [Next.js App Router](../apps/nextjs-app/README.md)
-- [Next.js Pages](../apps/nextjs-pages/README.md)
+To get started, check the README files for the frontend and backend in this
+repo. For Rootstock architecture details, start with
+[`../rootstock-architecture/index.md`](../rootstock-architecture/index.md).

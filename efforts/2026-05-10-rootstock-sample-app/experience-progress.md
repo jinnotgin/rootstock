@@ -150,3 +150,16 @@ Full verification after local scenarios:
 - `npm test -- --run` passed: 15 files, 26 tests
 - `npm run build` passed
 - `GOCACHE=/tmp/go-build go test ./...` passed
+
+Documentation maintenance:
+
+- updated frontend agent docs to match the implemented Rootstock service
+  boundary
+- clarified that feature hooks consume ports through `useServices()` rather
+  than concrete HTTP clients
+- clarified that local adapters define local product behavior while MSW remains
+  request-interception and scenario support
+- tightened frontend security guidance so browser-local auth is treated as a
+  local-mode fixture, not the production trust boundary
+- included frontend TDD guidance for behavior, port contract, and adapter
+  changes

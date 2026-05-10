@@ -141,7 +141,7 @@ Convert the current Bulletproof React sample into an Rootstock sample app with a
   - experience work stops at the local adapters
   - foundation work can live in the frontend as well as the backend
   - frontend API adapters, auth/session integration, real service mapping, monitoring, and contract enforcement are foundation work
-- Update `agent-docs/rootstock-architecture.md` with the implemented sample app mapping:
+- Update `agent-docs/rootstock-architecture/` with the implemented sample app mapping:
   - runtime mode versus capability mode
   - frontend ports, adapters, and composition root
   - local adapters, API adapters, and MSW's remaining role
@@ -149,7 +149,7 @@ Convert the current Bulletproof React sample into an Rootstock sample app with a
   - Go clean architecture ports, adapters, and constructor injection
   - why constructors are wiring, not ports
 - Cross-link or summarize relevant frontend guidance in `agent-docs/frontend-practices/` where needed, especially API layer, project structure, testing, and state management.
-- Cross-link or summarize relevant backend guidance in `agent-docs/backend-practices.md` where needed, especially use-case-owned interfaces, repository adapters, and bootstrap wiring.
+- Cross-link or summarize relevant backend guidance in `agent-docs/backend-practices/` where needed, especially use-case-owned interfaces, repository adapters, and bootstrap wiring.
 - Keep effort docs as the work log and `agent-docs/` as the reusable project guidance.
 
 ## Public interfaces
