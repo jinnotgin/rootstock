@@ -1,0 +1,47 @@
+import * as z from 'zod';
+
+const createEnv = () => {
+	const EnvSchema = z.object({
+		API_URL: z.string().optional().default('http://localhost:8770/api'),
+		RUNTIME_MODE: z
+			.enum(['local', 'dev', 'staging', 'production'])
+			.optional()
+			.default('local'),
+		DATA_CAPABILITY: z.enum(['local', 'api']).optional(),
+		AUTH_CAPABILITY: z.enum(['local', 'api']).optional(),
+		LOCAL_SCENARIO: z
+			.enum(['empty', 'logged-out', 'normal-user', 'admin-user', 'pending-user', 'at-limit'])
+			.optional()
+			.default('empty'),
+		ENABLE_API_MOCKING: z
+			.string()
+			.refine((s) => s === 'true' || s === 'false')
+			.transform((s) => s === 'true')
+			.optional(),
+		APP_URL: z.string().optional().default('http://localhost:3770'),
+	});
+
+	const envVars = Object.entries(import.meta.env).reduce<Record<string, string>>(
+		(acc, [key, value]) => {
+			if (key.startsWith('VITE_APP_')) {
+				acc[key.replace('VITE_APP_', '')] = value;
+			}
+			return acc;
+		},
+		{},
+	);
+
+	const parsedEnv = EnvSchema.safeParse(envVars);
+
+	if (!parsedEnv.success) {
+		throw new Error(
+			`Invalid env provided.\nThe following variables are missing or invalid:\n${Object.entries(parsedEnv.error.flatten().fieldErrors)
+				.map(([k, v]) => `- ${k}: ${v}`)
+				.join('\n')}`,
+		);
+	}
+
+	return parsedEnv.data;
+};
+
+export const env = createEnv();
