@@ -28,11 +28,11 @@ type Config struct {
 func Load() Config {
 	cfg := Config{
 		AppEnv:        appEnv(getEnv("APP_ENV", string(EnvLocal))),
-		Address:       getEnv("ADDRESS", ":8080"),
+		Address:       getEnv("ADDRESS", ":8770"),
 		DatabasePath:  getEnv("DATABASE_PATH", "data/app.db"),
 		JWTSecret:     getEnv("JWT_SECRET", devJWTSecret),
 		CookieName:    getEnv("COOKIE_NAME", "bulletproof_react_app_token"),
-		AllowedOrigin: getEnv("ALLOWED_ORIGIN", "http://localhost:3000"),
+		AllowedOrigin: getEnv("ALLOWED_ORIGIN", "http://localhost:3770"),
 	}
 	if (cfg.AppEnv == EnvStaging || cfg.AppEnv == EnvProduction) && cfg.JWTSecret == devJWTSecret {
 		panic("JWT_SECRET must be configured for staging and production")

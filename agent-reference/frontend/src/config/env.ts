@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 const createEnv = () => {
   const EnvSchema = z.object({
-    API_URL: z.string().optional().default('http://localhost:8080/api'),
+    API_URL: z.string().optional().default('http://localhost:8770/api'),
     RUNTIME_MODE: z
       .enum(['local', 'dev', 'staging', 'production'])
       .optional()
@@ -27,7 +27,7 @@ const createEnv = () => {
       .refine((s) => s === 'true' || s === 'false')
       .transform((s) => s === 'true')
       .optional(),
-    APP_URL: z.string().optional().default('http://localhost:3000'),
+    APP_URL: z.string().optional().default('http://localhost:3770'),
     APP_MOCK_API_PORT: z.string().optional().default('8080'),
   });
 

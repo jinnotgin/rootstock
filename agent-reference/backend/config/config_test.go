@@ -15,7 +15,7 @@ func TestLoadUsesLocalDevelopmentDefaults(t *testing.T) {
 	if cfg.AppEnv != EnvLocal {
 		t.Fatalf("expected default app env, got %q", cfg.AppEnv)
 	}
-	if cfg.Address != ":8080" {
+	if cfg.Address != ":8770" {
 		t.Fatalf("expected default address, got %q", cfg.Address)
 	}
 	if cfg.DatabasePath != "data/app.db" {
@@ -27,7 +27,7 @@ func TestLoadUsesLocalDevelopmentDefaults(t *testing.T) {
 	if cfg.CookieName != "bulletproof_react_app_token" {
 		t.Fatalf("expected default cookie name, got %q", cfg.CookieName)
 	}
-	if cfg.AllowedOrigin != "http://localhost:3000" {
+	if cfg.AllowedOrigin != "http://localhost:3770" {
 		t.Fatalf("expected default allowed origin, got %q", cfg.AllowedOrigin)
 	}
 }

@@ -4,7 +4,7 @@ info:
   version: 0.1.0
   description: Contract for the auth, teams, users, discussions, and comments sample app.
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8770/api
 security:
   - sessionCookie: []
 paths:
