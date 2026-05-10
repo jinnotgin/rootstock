@@ -2,7 +2,7 @@
 
 This frontend is the reference implementation of the rootstock ports/adapters model. It demonstrates how a React app can run fully offline in local mode, then swap in real API adapters without changing any feature code.
 
-For architectural guidance see `agent-docs/rootstock-architecture/` and `rootstock-context-v2.md`.
+For architectural guidance see `agent-docs/rootstock-architecture/`.
 
 ## Get started
 

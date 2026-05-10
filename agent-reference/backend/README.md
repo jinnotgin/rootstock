@@ -2,7 +2,7 @@
 
 This backend is the reference implementation of the rootstock clean architecture model. It serves the API that the frontend consumes when running in `dev`, `staging`, or `production` mode (i.e., when the frontend's adapters point at a real backend instead of local fakes).
 
-It follows the guidance in `agent-docs/backend-practices/` and aligns with the frontend's ports/adapters model. For the full architectural vision see `rootstock-context-v2.md`.
+It follows the guidance in `agent-docs/backend-practices/` and aligns with the frontend's ports/adapters model.
 
 ## Get started
 
