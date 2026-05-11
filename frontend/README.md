@@ -22,6 +22,25 @@ Before writing any code, read these files to understand the expected layout and 
 | `agent-reference/frontend/` | Complete reference implementation demonstrating the full stack |
 | `.agents/skills/seed-frontend.md` | Which folders to copy when bootstrapping this directory |
 
+The reference frontend uses a layered directory structure:
+
+```
+src/
+  ports/           # Interfaces the app depends on (AuthProvider, DiscussionStore, etc.)
+  adapters/
+    local/         # In-memory implementations for offline/local mode
+    http/          # Real API implementations that call the backend
+  services/
+    bootstrap/     # Composition root — selects adapters based on runtime config
+    app-services-provider.tsx  # React context that injects services into the tree
+  domain/          # Shared domain types
+  app/             # Routes and top-level providers
+  features/        # Feature modules (discussions, comments, users, teams)
+  components/      # Shared UI components
+  lib/             # Utilities (api-client, auth, react-query)
+  testing/         # Test adapters, data generators, MSW handlers
+```
+
 ## Suggested technologies
 
 Derived from the reference implementation in `agent-reference/frontend/`:
