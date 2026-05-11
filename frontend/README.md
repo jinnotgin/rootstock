@@ -1,7 +1,9 @@
 # Frontend
 
 This directory is the working space for your application's frontend. It is
-currently empty — no production code lives here yet.
+currently empty — no production code lives here yet. 
+
+When built, it should be an app that can run fully offline in local mode, then swap in real API adapters without changing any feature code using a ports/adapters model. For architectural guidance see `agent-docs/rootstock-architecture/`.
 
 ## Temporary state
 
@@ -11,13 +13,12 @@ in `.agents/skills/seed-frontend.md`.
 
 ## Project structure
 
-Before writing any code, read these files to understand the expected layout and
-approach:
+Before writing any code, read these files to understand the expected layout and approach:
 
 | Document | What it covers |
 |----------|---------------|
-| `agent-docs/rootstock-architecture/index.md` | Ports/adapters model, experience/foundation boundary |
-| `agent-docs/frontend-practices/` | Component patterns, state management, local-mode development |
+| `agent-docs/rootstock-architecture/` | Ports/adapters model, experience/foundation boundary |
+| `agent-docs/frontend-practices/` | Project structure, component patterns, state management, local-mode development |
 | `agent-reference/frontend/` | Complete reference implementation demonstrating the full stack |
 | `.agents/skills/seed-frontend.md` | Which folders to copy when bootstrapping this directory |
 
@@ -55,3 +56,15 @@ Derived from the reference implementation in `agent-reference/frontend/`:
 
 **Development**
 - [Storybook](https://storybook.js.org) 10 — component development and documentation
+
+
+## Suggested intitial environment variables
+
+These intitial env vars are prefixed with `VITE_APP_` and validated by Zod at startup.
+
+| Variable | Values | Default |
+|---|---|---|
+| `RUNTIME_MODE` | `local`, `dev` | `local` |
+| `DATA_CAPABILITY` | `local`, `api` | derived from mode |
+
+In `local` mode both capabilities default to `local`, so the app works with no backend. Set `RUNTIME_MODE=dev` to switch to API adapters.
