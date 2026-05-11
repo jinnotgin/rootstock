@@ -16,8 +16,8 @@ approach:
 
 | Document | What it covers |
 |----------|---------------|
-| `agent-docs/rootstock-architecture/index.md` | Ports/adapters model, experience/foundation boundary |
-| `agent-docs/backend-practices/index.md` | Use case patterns, repository ports, dependency injection |
+| `agent-docs/rootstock-architecture/` | Ports/adapters model, experience/foundation boundary |
+| `agent-docs/backend-practices/` | Use case patterns, repository ports, dependency injection |
 | `agent-reference/backend/` | Complete reference implementation demonstrating the full stack |
 
 The reference backend uses a layered directory structure:
