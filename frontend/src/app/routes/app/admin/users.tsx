@@ -1,8 +1,9 @@
+import { UsersTable } from '@/features/admin/components/users-table';
+
 export default function AdminUsersRoute() {
 	return (
-		<div>
-			<h1 className="text-2xl font-semibold">Users</h1>
-			<p className="mt-2 text-muted-foreground">Manage whitelisted users.</p>
+		<div className="space-y-6">
+			<UsersTable />
 		</div>
 	);
 }

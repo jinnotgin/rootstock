@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router';
 
 import { makeLocalServices } from '@/adapters/local/local-services';
+import { LocalScenario } from '@/adapters/local/local-scenarios';
 import { AppServicesProvider } from '@/services/app-services-provider';
 
 import { LoginForm } from '../login-form';
@@ -12,7 +13,7 @@ import { LoginForm } from '../login-form';
 const renderLoginForm = (
 	onSuccess = vi.fn(),
 	onNeedsPassword = vi.fn(),
-	scenario: Parameters<typeof makeLocalServices>[0]['scenario'] = 'logged-out',
+	scenario: LocalScenario = 'logged-out',
 ) => {
 	const services = makeLocalServices({ scenario });
 	const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });

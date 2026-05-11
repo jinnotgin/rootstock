@@ -1,10 +1,10 @@
-import { createId } from './local-database';
+import { createId, currentWeekStart } from './local-database';
 
 import { ApiKey, Limits, Model, UsageSummary, User } from '@/domain/types';
 
 export type LocalScenario = 'empty' | 'logged-out' | 'normal-user' | 'admin-user' | 'pending-user' | 'at-limit';
 
-const WEEK_START = '2026-05-05';
+const WEEK_START = currentWeekStart();
 
 const MODELS: Model[] = [
 	{
