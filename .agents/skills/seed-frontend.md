@@ -1,16 +1,39 @@
+---
+name: seed-empty-frontend
+description: >-
+  Bootstrap an empty frontend/ directory from the agent-reference implementation.
+  Copies the UI component library, build tooling, and app shell while leaving
+  feature-specific modules for fresh, per-project creation.
+  Use when frontend/ is empty or missing structure and needs to be scaffolded
+  from agent-reference/frontend/.
+metadata:
+  author: your-org
+  version: "1.0"
+---
+
 # Skill: Seed Empty Frontend
 
-Use this skill when `frontend/` is empty or missing structure and you need to
-bootstrap it from the reference implementation.
+Bootstrap `frontend/` from `agent-reference/frontend/`.
+Adopt the structure and approach — **do not** copy feature-specific content verbatim.
 
-The source for all copies is `agent-reference/frontend/`. Adopt the structure
-and approach — do not copy feature-specific content verbatim.
+## Source
+
+All files originate from `agent-reference/frontend/`.
 
 ---
 
-## What to copy
+## Step-by-step Instructions
 
-### Tier 1 — UI component library (minimum viable seed)
+### 1. Verify the target is empty
+
+Confirm that `frontend/` is missing or has no meaningful structure before proceeding.
+If files already exist, stop and ask the user whether to overwrite or merge.
+
+### 2. Copy files in tier order
+
+Copy from `agent-reference/frontend/` in the following priority.
+
+#### Tier 1 — UI component library (minimum viable seed)
 
 | Source | Purpose |
 |--------|---------|
@@ -18,7 +41,7 @@ and approach — do not copy feature-specific content verbatim.
 | `src/utils/` | `cn.ts` (class merging) and `format.ts` — depended on by nearly every component |
 | `src/index.css` | Global Tailwind CSS; components are unstyled without this |
 
-### Tier 2 — Config and tooling (needed to install and build)
+#### Tier 2 — Config and tooling (needed to install and build)
 
 | Source | Purpose |
 |--------|---------|
@@ -31,7 +54,7 @@ and approach — do not copy feature-specific content verbatim.
 | `eslint.config.js` | Lint config |
 | `.gitignore` | Standard ignores: macOS, node_modules, build output, env files, logs, editors |
 
-### Tier 3 — App shell (needed to render anything)
+#### Tier 3 — App shell (needed to render anything)
 
 | Source | Purpose |
 |--------|---------|
@@ -44,7 +67,7 @@ and approach — do not copy feature-specific content verbatim.
 | `src/assets/` | Images and fonts |
 | `public/` | Favicon, `mockServiceWorker.js`, other static assets |
 
-### Optional (copy if the project adopts these)
+#### Optional (copy if the project adopts these)
 
 | Source | Purpose |
 |--------|---------|
@@ -52,9 +75,7 @@ and approach — do not copy feature-specific content verbatim.
 | `e2e/` | Playwright E2E tests |
 | `.storybook/` | Storybook component development environment |
 
----
-
-## What NOT to copy
+### 3. Do NOT copy these directories
 
 These are reference feature implementations — create them fresh per project.
 
@@ -64,12 +85,18 @@ These are reference feature implementations — create them fresh per project.
 - `src/domain/` — domain types
 - `src/services/` — service wiring and bootstrap
 
----
-
-## After copying
+### 4. Post-copy adjustments
 
 1. Update `package.json` name, version, and description.
 2. Remove or replace fixture/demo content inside `src/app/routes/`.
 3. Define new ports in `src/ports/` that match the project's domain.
 4. Create a local adapter in `src/adapters/local/` before wiring any real API.
 5. See `agent-docs/rootstock-architecture/index.md` for the ports/adapters model.
+
+---
+
+## Common Edge Cases
+
+- **Partial frontend exists**: If some structure is already present, diff against the reference and copy only missing pieces. Do not overwrite user work.
+- **Dependency conflicts**: After copying `package.json`, run `npm install` (or the project's package manager) and resolve any version conflicts before proceeding.
+- **Path alias mismatch**: Ensure both `vite.config.ts` and `tsconfig.json` agree on the `@/*` path alias. A mismatch causes import resolution failures.
