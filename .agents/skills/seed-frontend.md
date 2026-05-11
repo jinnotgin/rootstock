@@ -13,9 +13,11 @@ metadata:
 
 # Skill: Seed Empty Frontend
 
-Bootstrap `frontend/` from `agent-reference/frontend/`.
+Use this skill when `frontend/` is empty or missing structure and you need to
+bootstrap it from the reference implementation.
 
-Adopt the UI component library, project structure and general approach — **do not** copy feature-specific content verbatim.
+The source for all copies is `agent-reference/frontend/`. Adopt the structure
+and approach — do not copy feature-specific content verbatim.
 
 ## Source
 
