@@ -1,6 +1,6 @@
 # Agent Instructions
 
-This project follows Rootstock philosophy: experience-first, foundation-backed, with explicit boundaries between the two.
+This project follows Rootstock philosophy: experience-first, foundation-backed, with explicit boundaries between the two. (More details here: `agent-docs/rootstock-architecture/index.md`)
 
 At the start of work, check for root `/.persona`. If it says `experience`:
 - stay within experience scope (screens, flows, copy, states, components, fixtures, local adapters, user-facing tests).
