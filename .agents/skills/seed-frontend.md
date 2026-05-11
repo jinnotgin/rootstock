@@ -14,7 +14,8 @@ metadata:
 # Skill: Seed Empty Frontend
 
 Bootstrap `frontend/` from `agent-reference/frontend/`.
-Adopt the structure and approach — **do not** copy feature-specific content verbatim.
+
+Adopt the UI component library, project structure and general approach — **do not** copy feature-specific content verbatim.
 
 ## Source
 
