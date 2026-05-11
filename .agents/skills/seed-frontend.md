@@ -7,7 +7,7 @@ description: >-
   Use when frontend/ is empty or missing structure and needs to be scaffolded
   from agent-reference/frontend/.
 metadata:
-  author: your-org
+  author: Jin
   version: "1.0"
 ---
 
